@@ -1,0 +1,27 @@
+{# Intended use:
+{% set dialog_header_text = 'Header text' %}
+{% include 'dialog-header' %}
+#}
+
+<div class="og-dialog-header">
+  <h5 class="og-dialog-title">{{ dialog_header_text }}</h5>
+  <button
+    class="og-dialog-close og-button-close"
+    type="reset"
+    aria-label="{{ 'modal_close' | t }}"
+    @click="{{ 'SMDialog.close' | js }}"
+    
+  >
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_2509_4677)">
+            <path d="M13.8907 12L18.6982 7.1925L19.6896 6.20109C19.8359 6.05484 19.8359 5.81719 19.6896 5.67094L18.6289 4.61016C18.4826 4.46391 18.245 4.46391 18.0987 4.61016L12.2998 10.4091L6.5009 4.60969C6.35465 4.46344 6.11699 4.46344 5.97074 4.60969L4.90949 5.67047C4.76324 5.81672 4.76324 6.05438 4.90949 6.20063L10.7089 12L4.90949 17.7989C4.76324 17.9452 4.76324 18.1828 4.90949 18.3291L5.97027 19.3898C6.11652 19.5361 6.35418 19.5361 6.50043 19.3898L12.2998 13.5909L17.1073 18.3984L18.0987 19.3898C18.245 19.5361 18.4826 19.5361 18.6289 19.3898L19.6896 18.3291C19.8359 18.1828 19.8359 17.9452 19.6896 17.7989L13.8907 12Z" fill="#1A1A1A"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_2509_4677">
+            <rect width="15" height="24" fill="white" transform="translate(4.7998)"/>
+        </clipPath>
+        </defs>
+    </svg>
+
+  </button>
+</div>

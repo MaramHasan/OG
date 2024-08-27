@@ -1,0 +1,123 @@
+{# Inactive subscriptions entry point #}
+<section id="og-inactive-pro-subscription">
+    {% set showheader = false %}
+    {% for subscription in subscriptions | reject('live') %}
+            {% set subscription_ended = 'new Date(new Date(subscription.start_date).setFullYear(new Date(subscription.start_date).getFullYear() + 1)).getTime() < new Date().getTime()'| js %}
+            {% if subscription and subscription.extra_data and subscription.extra_data.pro_membership == true and not subscription_ended %}
+                {% set payment = payments | find(id=subscription.payment) %}
+                {% set shipping_address = addresses | find(id=subscription.shipping_address) %}
+                {% set pro_subscription = false %}
+                {% set health_subscription = false %}
+                {% if subscription and subscription.extra_data and subscription.extra_data.pro_membership %}
+                    {% set pro_subscription = true %}
+                {% endif %}
+                <div class="og-content-wrapper "> 
+                    <sm-toggle class="og-order-toggle">
+                        <div class="shipment-header-product-wrapper">
+                            {% if index === 0 or showheader == true %}
+                                <div class="og-shipment-header">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                        <path d="M12.934 1.25L15.6901 9.73958H24.6137L17.3958 14.9826L20.1519 23.4722L12.934 18.2248L5.71181 23.4722L8.46788 14.9826L1.25 9.73958H10.1736L12.934 1.25Z" fill="#1A1A1A"/>
+                                    </svg>
+                                    <h1 class="og-title">PRO Access Membership</h1>
+                                    <div class="og-shipment-info">
+                                        <span class="og-shipment-on">Ends</span>
+                                        {% set subscription_created_date_object = 'new Date(subscription.created)' | js %}
+                                        {% set subscription_created_date_month = 'new Date(subscription.created).getMonth() + 1' | js %}
+                                        {% set subscription_created_date_fullyear = 'new Date(subscription.created).getFullYear()' | js %}
+                                        {% set subscription_end_date = 'new Date(subscription_created_date_fullyear + 1, subscription_created_date_month , 0)' | js %}
+                                        {{ subscription_end_date | date }}
+                                    </div>
+                                </div>
+                                {% if not subscription | get('extra_data.hidden') == true %}
+                                    {% set product = products | find(id=subscription.product) %}
+                                    {% if product %}
+                                        <div class="og-product-image-container og-thumbnail">
+                                            <a href="{{ product.detail_url | if_defined }}">
+                                                <img
+                                                class="og-product-image"
+                                                loading="lazy"
+                                                alt="{{ product.name }}"
+                                                src="{{ product.image_url | if_defined }}"
+                                                width="200"
+                                                height="200"
+                                                />
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="og-order-actions">
+                        {# toggle button #}
+                            <button
+                            data-toggle-trigger
+                            class="og-button og-order-toggle-trigger"
+                            data-variant="secondary"
+                            aria-label="{{ 'a11y_order_details_toggle' | t }}"
+                            >
+                                MANAGE MEMBERSHIP
+                            </button>
+                        </div>
+                        {# toggle button #}
+                        {% set inactive_pro_order_counter = inactive_pro_order_counter + 1 %}
+                        {% if not subscription | get('extra_data.hidden') == true %}
+                            <div class="og-inactive-subscription"  data-toggle-content>
+                                {% if product %}
+                                    <div class="og-product">
+                                        <div class="og-product-image-container">
+                                            <img
+                                            class="og-product-image"
+                                            loading="lazy"
+                                            alt="{{ product.name }}"
+                                            src="{{ product.image_url | if_defined }}"
+                                            width="200"
+                                            height="200"
+                                            />
+                                        </div>
+                                        <div class="og-product-info-wrapper">
+                                            <div class="og-name-price-controls-container">
+                                                <div class="og-description-and-controls">
+                                                <div class="og-product-description">
+                                                    <h3 class="og-product-brand">GNC</h3>
+                                                    {# 2 LINES CAUSED ISSUE IN SMI % set frequency_text = 'frequency_period' | t(every = subscription.every, period = subscription.every_period) % #}
+                                                    {# <option>Delivered every {{ frequency_text }}</option> #}
+                                                    <h3 class="og-product-name">
+                                                        <a href="{{ product.detail_url | if_defined }}">{{ product.name }}</a>
+                                                    </h3>
+                                                    {% if product.sku != '600848' %}
+                                                        <h3 class="og-product-health">*Includes GNC Health Basic Subscription. This PRO member perk will be retired on 1/1/25.</h3>
+                                                    {% endif%}
+                                                    <span class="og-final-unit-price">{{ product.price | currency }}</span>
+                                                </div>
+                                                </div>
+                                            </div>{# og-name-price-controls-container #}
+                                            {% set pro_product_displayed = true %}
+                                            <form 
+                                            action="{{ 'reactivate_subscription' | action }}"  
+                                            name="og_subscription_reactivate"
+                                            class="og_subscription_reactivate"
+                                            @success="{{ 'SMDialog.close' | js }}"
+                                            @reset="{{ 'SMDialog.close' | js }}"
+                                            >
+                                                    <input type="hidden" value="{{ subscription.public_id }}" name="subscription" />
+                                                    <input type="hidden" name="every" value="{{ subscription.every }}"/>
+                                            <input type="hidden" name="every_period" value="{{ subscription.every_period }}"/>
+                                                    <button class="og-button og-link confirm-cancel-button pro-confirm-cancel enable-auto-renew" name="reactivate_subscription" data-pid="{{product.external_product_id}}" type="submit">
+                                                        Enable Auto Renew
+                                                    </button>
+                                            </form>
+                                        </div>
+                                        </div>{# /og-product #}
+                                        {% include 'inactive-pro-summary' %}
+                                {% endif %}
+                            </div>{# /og-inactive-subscription #}
+                        {% endif %}
+                    </sm-toggle>
+                </div>
+            {% elseif index === 0 %}
+                {% set showheader = true %}
+            {% endif %}
+    {% endfor %}
+</section>
+{# /og-inactive-subscriptions #}

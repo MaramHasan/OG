@@ -1,0 +1,27 @@
+<sm-dialog  id="cancelled-dialog" aria-hidden="true" class="cancel-success-dialog">
+    <dialog aria-hidden="true" class="og-dialog-size">
+      <div class="og-cancel-subscription-success">
+        {% set dialog_header_text = 'Your subscription was canceled' %}
+        {% include 'dialog-header' %}
+    
+        <div class="og-dialog-body">
+          <div class="cancelled-msg">
+            <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.8505 0.727145L4.72811 10.8495L1.1495 7.27092C0.980102 7.10152 0.705438 7.10152 0.536006 7.27092L0.127047 7.67988C-0.0423491 7.84927 -0.0423491 8.12394 0.127047 8.29337L4.42138 12.5877C4.59078 12.7571 4.86545 12.7571 5.03488 12.5877L15.873 1.74963C16.0423 1.58024 16.0423 1.30557 15.873 1.13614L15.464 0.727145C15.2946 0.557749 15.0199 0.557749 14.8505 0.727145Z" fill="#155724"/>
+            </svg>
+            Subscription canceled
+          </div>
+          <div class="cancelled-miss-you">
+            We are going to miss you! Maybe one of our products will better suit you. Explore what we have to offer and create a new subscription.
+          </div>
+        </div><!-- /og-dialog-body -->
+    
+        <div class="og-dialog-footer og-dialog-stacked-buttons">
+          <a href="/shop-gnc-routines/">
+            <button class="og-button og-emphasis-button og-primary" name="skip_subscription" type="button">
+              SHOP GNC ROUTINES
+            </button>
+          </a>
+        </div>
+    </dialog>
+</sm-dialog >

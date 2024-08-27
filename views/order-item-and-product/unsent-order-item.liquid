@@ -1,0 +1,143 @@
+{% set og_product_class_name = 'og-product' %}
+{% if pro_subscription %}
+    {% set og_product_class_name = 'og-product og-pro-subscription' %}
+{% elseif health_subscription %}
+    {% set og_product_class_name = 'og-product og-health-subscription' %}
+{% endif%}
+
+<div class="{{ og_product_class_name }}" og-item-id="{{ order_item.public_id }}" og-subscription-id="{{ order_item.subscription }}">
+    {% if product %}
+        {% for group in product.groups %}
+            {% if shipping_address and group and group.name == 'restricted-state-weightloss' %}
+                {% for state in restricted_states %}
+                    {% if shipping_address.state_province_code == state %}
+                        {% set restricted_products_and_restricted_state = true %}
+                        {% set enable_adult_signature_delivary_fee = true %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        
+        <div class="og-product-row">
+            <div class="og-product-image-container">
+                <img class="og-product-image" loading="lazy" alt="{{ product.name }}" src="{{ product.image_url | if_defined }}" width="200" height="200" />
+            </div>
+            <div class="og-name-price-controls-container">
+            <div class="og-description-and-controls">
+                {% if pro_subscription == true %}
+                    <div class="og-product-description pro-access-description">
+                        <h3 class="og-product-brand">GNC</h3>
+                        {# 2 LINES CAUSED ISSUE IN SMI % set frequency_text = 'frequency_period' | t(every = subscription.every, period = subscription.every_period) % #}
+                        {# <option>Delivered every {{ frequency_text }}</option> #}
+                        <h4 class="og-product-display-name"><a href="{{ product.detail_url | if_defined }}">{{ product.name }}</a></h4>
+                        {% if product.sku != '600848' %}
+                            <h3 class="og-product-health">*Includes GNC Health Basic Subscription. This PRO member perk will be retired on 1/1/25.</h3>
+                        {% endif%}
+                        {% include 'order-item-and-product/order-item-price' %}
+                        </div>
+                {% else %}
+                    <div class="og-product-description">
+                        {% if subscription and subscription.extra_data and subscription.extra_data.brand %}
+                            <h3 class="og-product-brand">{{subscription.extra_data.brand}}</h3>
+                        {% endif %}
+                        {% if health_subscription == true %}
+                            <h3 class="og-product-brand">GNC</h3>
+                        {% endif%}
+                        <h3 class="og-product-name">
+                            <a href="{{ product.detail_url | if_defined }}">{{ product.name }}</a>
+                        </h3>
+                        {# 2 LINES CAUSED ISSUE IN SMI % set frequency_text = 'frequency_period' | t(every = subscription.every, period = subscription.every_period) % #}
+                        {# <option>Delivered every {{ frequency_text }}</option> #}
+                        <h4 class="og-product-display-name">{{ product.display_name }}</h4>
+                        {% include 'order-item-and-product/order-item-price' %}
+                        </div>
+                {% endif %}
+                
+                {% if pro_subscription == false and order_is_about_to_be_processed == true %}
+                    <div class="og-item-controls">
+                        {% if health_subscription == false %}
+                            <div class="og-freq-quantity-controls">
+                                {% if subscription %}
+                                    {# Quantity control #}
+                                    <!--<div style="background: pink">{{ 'JSON.stringify(subscription)' | js }}</div>-->
+                                        {% include 'order-item-and-product/change-quantity' %}
+
+                                        {# Frequency control #}
+                                        <div class="og-freq">
+                                        <span>{{ 'item_controls_every' | t }}</span>
+                                        {% include 'order-item-and-product/change-subscription-frequency' %}                                     
+                                    </div>
+                                {% else %}
+                                    <div class="og-freq-quantity-controls">
+                                        {# Quantity control #}
+                                        {% include 'order-item-and-product/change-quantity'%}
+                                        {# One Time Frequency Display #}
+                                        <div class="og-freq">
+                                        <span>{{ 'one_time_notice' | t }}</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                            
+                        <div class="og-item-remove-actions">
+                            {% if subscription %}
+                                {% set alternative_product_ids = get(sku_swap, 'products.' + product.external_product_id, []) %}
+                                {% if alternative_product_ids.length and health_subscription == false %}
+                                    {% include 'sku-swap-product-change' %}
+                                    <span class="og-remove-item-separator">|</span>
+                                {% endif %}
+                            {% endif %}
+                            {# If the order item has a subscription, display subscription controls #}
+                            {# If the order item is one time or belongs to an order with more than one order item, display delete item control #}
+                            {% if current_order_items.length > 1 or not subscription %}
+                                {% include 'order-item-and-product/delete-item' %}
+                                {% if subscription and health_subscription == false %}
+                                <span class="og-remove-item-separator">|</span>
+                                {% endif%}
+                            {% endif %}
+                            {% if subscription %}
+                                {% include 'cancel/cancel-subscription' %}
+                            {% endif %}
+                            </div>{# /og-item-remove-actions #}
+                        </div>{# /og-description-and-controls #}
+                    </div>
+                {% endif %}
+            </div>{# /og-name-price-controls-container #}
+        </div>
+    {% endif %}
+
+    {% if restricted_products_and_restricted_state  %}
+        <div class="og-product-row signature-required-warning">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <g clip-path="url(#clip0_4020_138567)">
+                            <path d="M7 1.09375C10.2435 1.09375 12.9062 3.7208 12.9062 7C12.9062 10.2619 10.2646 12.9062 7 12.9062C3.73942 12.9062 1.09375 10.2659 1.09375 7C1.09375 3.74054 3.73521 1.09375 7 1.09375ZM7 0.21875C3.25508 0.21875 0.21875 3.25618 0.21875 7C0.21875 10.746 3.25508 13.7812 7 13.7812C10.7449 13.7812 13.7812 10.746 13.7812 7C13.7812 3.25618 10.7449 0.21875 7 0.21875ZM6.01562 9.625H6.34375V6.34375H6.01562C5.83442 6.34375 5.6875 6.19683 5.6875 6.01562V5.79688C5.6875 5.61567 5.83442 5.46875 6.01562 5.46875H7.32812C7.50933 5.46875 7.65625 5.61567 7.65625 5.79688V9.625H7.98438C8.16558 9.625 8.3125 9.77192 8.3125 9.95312V10.1719C8.3125 10.3531 8.16558 10.5 7.98438 10.5H6.01562C5.83442 10.5 5.6875 10.3531 5.6875 10.1719V9.95312C5.6875 9.77192 5.83442 9.625 6.01562 9.625ZM7 3.0625C6.51675 3.0625 6.125 3.45425 6.125 3.9375C6.125 4.42075 6.51675 4.8125 7 4.8125C7.48325 4.8125 7.875 4.42075 7.875 3.9375C7.875 3.45425 7.48325 3.0625 7 3.0625Z" fill="#636466"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_4020_138567">
+                                <rect width="14" height="14" fill="white"/>
+                            </clipPath>
+                        </defs>
+                </svg>
+            </div>
+            <div class ="signature-required-warning-message">
+                {{'signature_required_warning' | t}}
+            </div>
+        </div>
+    {% endif %}
+</div>{# /og-product #}
+
+{% if pro_subscription == true %}
+<form
+    action="{{ 'cancel_subscription' | action }}"
+    name="og_subscription_cancel"
+    @success={{ 'reset_cancel_divs' | js }}
+    @reset={{ 'reset_cancel_divs' | js }}
+    >
+    <input type="hidden" value="{{ subscription.public_id }}" name="subscription" />
+    <button class="og-button og-link confirm-cancel-button pro-confirm-cancel" name="cancel_subscription" data-pid="600762" type="submit">
+    Cancel Auto Renew
+    </button>
+</form
+{% endif %}

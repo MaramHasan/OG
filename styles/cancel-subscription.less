@@ -1,0 +1,306 @@
+// Large devices (desktops, less than 1200px)
+@media (min-width: 1024px) {
+  .og-container {
+    .og-cancel-subscription-button,
+    .og-send-shipment-now-button,
+    .og-cancel-subscription-success-modal {
+      dialog {
+        padding: 48px 36px 36px 36px;
+        max-width: 600px !important;
+        min-width: auto !important;
+      }
+
+      .og-dialog-body {
+        line-height: 28px;
+        font-size: 18px;
+      }
+      .og-input-group {
+        font-family: proxima-nova,Arial,sans-serif;
+        color: #1A1A1A;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 18px;
+        margin-bottom: 12px !important;
+        margin-top: 12px !important;
+      }
+      .og-dialog-title {
+        font-size: 48px;
+        line-height: 44px;
+        font-weight: 700;
+      }
+
+      .og-dialog-stacked-buttons {
+        flex-direction: row;
+        max-width: 100%;
+
+        .og-button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+// Medium devices (tablets, less than 1024px)
+@media (max-width: 1024px) {
+  .og-container {
+    .og-cancel-subscription-button,
+    .og-send-shipment-now-button,
+    .og-cancel-subscription-success-modal {
+      dialog {
+        padding: 48px 24px 24px 24px;
+        max-width: 592px !important;
+        min-width: auto !important;
+      }
+
+      .og-dialog-stacked-buttons {
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+
+        .og-button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+// Small devices (landscape phones, less than 768px)
+@media (max-width: 768px) {
+  .og-container {
+    .og-cancel-subscription-button,
+    .og-send-shipment-now-button,
+    .og-cancel-subscription-success-modal {
+      dialog {
+        padding: 48px 24px 24px 24px;
+        width: 100%;
+        max-width: 366px !important;
+        color: #1a1a1a;
+        overflow: hidden;
+        min-width: auto !important;
+      }
+
+      .og-dialog-stacked-buttons {
+        max-width: 100%;
+      }
+
+      .og-dialog-header {
+        margin-bottom: 12px;
+
+        .og-dialog-title {
+          font-size: 36px;
+          line-height: 34px;
+          font-weight: 700;
+        }
+
+        .og-button {
+          position: absolute;
+          right: 24px;
+          top: 24px;
+        }
+      }
+
+      a.og-custom-element {
+        display: block !important;
+        width: 100% !important;
+      }
+
+      .og-dialog-body {
+        line-height: 26px;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// Common styles for all devices
+.og-container {
+  .og-cancel-subscription-button,
+  .og-send-shipment-now-button,
+  .og-cancel-subscription-success-modal {
+    dialog {
+      .og-dialog-header {
+        justify-content: flex-start;
+        margin-bottom: 12px;
+
+        .og-button-close {
+          top: 24px;
+          right: 24px;
+        }
+      }
+
+      .og-dialog-body {
+        padding: 0;
+        font-weight: initial;
+
+        .og-input-group .og-check-radio-label {
+          font-size: 14px;
+          line-height: 18px;
+          color: #1a1a1a;
+        }
+      }
+
+      .og-input-group {
+        padding: 0;
+        border: 0;
+        margin-bottom: 12px !important;
+        margin-top: 12px !important;
+
+        .og-check-radio-label {
+          letter-spacing: normal;
+        }
+      }
+
+      span.still-cancel {
+        display: block;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 18px;
+        margin-top: 40px;
+        margin-bottom: 12px;
+      }
+
+      .og-cancel-confirm-text {
+        display: block;
+        margin-bottom: 30px;
+      }
+
+      .og-dialog-stacked-buttons {
+        justify-content: center;
+        margin-top: 5px;
+      }
+
+      .og-cancel-subscription-confirm-cancel {
+        .og-cancel-shipment-box {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          border: 1px solid #e7e6e6;
+          padding: 24px 0;
+          margin-bottom: 36px;
+
+          .og-cancel-image {
+            margin-bottom: 15px;
+          }
+
+          .og-cancel-nextdate-text {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 30px;
+          }
+        }
+
+        a.og-custom-element,
+        button.og-custom-element {
+          display: flex !important;
+          width: 100%;
+          color: #fff;
+          background: #1a1a1a;
+          justify-content: center;
+          align-items: center;
+          font-weight: bold;
+          height: 50px;
+          font-size: 14px;
+          line-height: 1;
+        }
+      }
+    }
+  }
+
+  .og-cancel-helptext {
+    margin-bottom: 12px;
+  }
+}
+
+.cancel-success-dialog {
+  .og-cancel-title {
+    text-align: left;
+    font-size: 36px;
+    line-height: 34px;
+  }
+
+  .og-dialog-body {
+    text-align: left;
+  }
+
+  .og-dialog-header {
+    text-align: left;
+    justify-content: left;
+  }
+
+  .og-dialog-body {
+    .cancelled-msg {
+      text-align: left;
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      padding: 12px 16px;
+      color: #155724;
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 26px;
+      margin-top: 24px;
+
+      svg {
+        margin-right: 10px;
+      }
+    }
+
+    .cancelled-miss-you {
+      margin-top: 12px;
+      margin-bottom: 36px;
+    }
+  }
+
+  .og-dialog-stacked-buttons {
+    max-width: 100%;
+    margin-top: 6px;
+    margin-bottom: 12px;
+
+    a {
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+
+    .og-emphasis-button {
+      width: 100%;
+    }
+  }
+}
+
+og-smi .og-container {
+  .og-cancel-continue-btn {
+    width: 100% !important;
+    background: #1a1a1a !important;
+    color: #fff !important;
+
+    &:disabled {
+      background-color: #E0E0E0 !important;
+      color: #636363 !important;
+      border: 0;
+    }
+  }
+
+  .og-button.confirm-cancel-button {
+    border: 0 !important;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+  }
+
+  .og-button.confirm-cancel-button.pro-confirm-cancel {
+    margin-bottom: 24px;
+
+    &:after {
+      width: 100%;
+    }
+  }
+}

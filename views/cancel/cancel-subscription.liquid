@@ -1,0 +1,29 @@
+{% set cancel_reasons = 'cancel_reasons' | t  %}
+
+<div class="og-cancel-subscription-button">
+  {% if 'Date.parse(order.place) - 3 * 86400 * 1000 > new Date().getTime()' | js %}
+    <a class="og-link" data-click-target="og-cancel-sub-dialog-{{ subscription.public_id }}" @click="{{ '(ev) => show_cancel_dialog(ev)' | js }}" data-pname={{product.name}}>
+      {{ 'cancel_subscription_button' | t }}
+    </a>
+  {% else %}
+    <a class="og-link" disabled">
+      {{ 'cancel_subscription_button' | t }}
+    </a>
+  {% endif %}
+  <sm-dialog id="og-cancel-sub-dialog-{{ subscription.public_id }}">
+    <dialog aria-hidden="true" class="og-dialog-size">
+      <form
+        action="{{ 'cancel_subscription' | action }}"
+        name="og_subscription_cancel"
+        @success={{ 'show_cancel_success' | js }}
+        @reset={{ 'reset_cancel_divs' | js }}
+      >
+        <input type="hidden" value="{{ subscription.public_id }}" name="subscription" />
+        {% include 'cancel/cancel-subscription-skip' %}
+        {% include 'cancel/cancel-subscription-select-reasons' %}
+        {% include 'cancel/cancel-subscription-confirm-cancel' %}
+      </form>
+    </dialog>
+  </sm-dialog>
+</div>
+

@@ -1,0 +1,22 @@
+.og-change-billing-shopify {
+  gap: @size-4;
+}
+
+.og-payment-container {
+  &:not(:has(a, button)) {
+    border-color: @color-border;
+  }
+
+  .og-payment-name {
+    display: flex;
+    align-items: center;
+    gap: @size-2;
+    margin-bottom: @size-1;
+  }
+
+  .og-payment-logo {
+    padding: @size-1;
+    padding-left: 0;
+    width: 60px;
+  }
+}

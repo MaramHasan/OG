@@ -1,0 +1,86 @@
+.og-page-title {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background: @container-background;
+
+  .og-page-title-content {
+    border-radius: @border-radius-md;
+  }
+
+  .og-page-title-description {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    // this URL is set in the page-title template since the styles don't have access to the asset URL
+    background-image: var(--header-image-url);
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    min-height: .safe-rem(8.125) [ @result];
+  }
+
+  h1 {
+    font-weight: 700;
+    color: @color-page-title;
+  }
+
+  p {
+    font-size: @text-base;
+    color: @color-page-title;
+  }
+
+  /* Desktop-specific styles */
+  @media (min-width: @mobile-width) {
+    width: 100%;
+    margin: auto;
+    padding: @size-4-5;
+    border-radius: @border-radius-md;
+    /* prettier-ignore */
+    box-shadow:
+      1px 0 1px 0 @shadow-color-light,  /* Right shadow */
+      -1px 0 1px 0 @shadow-color-light, /* Left shadow */
+      0 -1px 1px 0 @shadow-color-light, /* Top shadow */
+      0 2px 1px 0 @shadow-color-dark; /* Bottom shadow */
+
+    .og-page-title-description {
+      padding-left: @size-11;
+      border-radius: @border-radius-md;
+      place-items: start;
+    }
+    p {
+      font-size: @text-xl;
+    }
+  }
+}
+
+.og-shipment-header-label {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 12px;
+    
+    @media (max-width: 1024px) {
+        font-size: 16px;
+        margin-bottom: 4px;
+    }
+    
+    &.pro-access, 
+    &.health-subscription {
+        margin-bottom: 4px;
+    }
+    span {
+        color: #1A1A1A;
+    }
+    .og-shipment-date-header {
+        color: #E60D2E;
+        padding-left: 3px;
+    }
+}
+
+.og-subtitle {
+    font-size: 18px;
+    
+    @media (max-width: 1024px) {
+        font-size: 16px;
+    }
+}

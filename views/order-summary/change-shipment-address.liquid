@@ -1,0 +1,119 @@
+{% if 'external_shipping_enabled' | setting %}
+  <a class="og-link" href="{{ 'external_shipping_url' | setting }}">{{ 'shipment_unsent_footer_shipping_edit' | t }}</a>
+{% else %}
+  {% set enabled_countries = setting('enabled_countries', ["CA", "MX", "US"]) %}
+  {% set countries = 'localized_countries' | t %}
+  {% set enabled_states_all = setting('enabled_states_all', ["AK", "AL", "AR", "AS", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "GU", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MP", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "PR", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VI", "VT", "WA", "WI", "WV", "WY"]) %}
+  {% set states = 'localized_states' | t %}
+  
+  {%if order_is_about_to_be_processed == true %}
+  <div class="og-change-shipment-address-button">
+    <a
+      class='og-link'
+      data-click-target="change-shipment-address"
+      @click="{{ 'SMDialog.open' | js }}"
+    >
+      {{ 'shipment_unsent_footer_shipping_edit' | t }}
+    </a>
+  {% endif %}
+  <sm-dialog id="change-shipment-address">
+    <dialog aria-hidden="true">
+      <form
+        action="{{ 'change_shipping_address' | action }}"
+        @success="{{ 'SMDialog.close' | js }}"
+        @reset="{{ 'SMDialog.close' | js }}"
+      >
+        {% set dialog_header_text = 'modal_shipping_header' | t %}
+        {% include 'dialog-header' %}
+
+        <div class="og-dialog-body">
+          <input type='hidden' value='{{ order.public_id }}' name='order_id'/>
+          <input type='hidden' value='{{ customer.sig_field }}' name='customer'/>
+          <div class='address-form'>
+            <div class='og-row'>
+              <div class='og-form-group og-col'>
+                <label class='og-form-label  {{ 'og-required' if 'required_fields.shipping_address.first_name' | setting }}' for='first_name_{{ order.public_id }}'>
+                  {{ 'form_address_first_name' | t }}
+                </label>
+                <input type='text' id='first_name_{{ order.public_id }}' class='og-form-control' name='first_name' ?required='{{ 'required_fields.shipping_address.first_name' | setting }}'/>
+              </div>
+              <div class='og-form-group og-col'>
+                <label class='og-form-label  {{ 'og-required' if 'required_fields.shipping_address.last_name' | setting }}'>
+                  {{ 'form_address_last_name' | t }}
+                </label>
+                <input type='text' id='last_name_{{ order.public_id }}' class='og-form-control' name='last_name' ?required='{{ 'required_fields.shipping_address.last_name' | setting }}'/>
+              </div>
+            </div>
+            <div class='og-form-group'>
+              <label class='og-form-label {{ 'og-required' if 'required_fields.shipping_address.address' | setting }}' for='addressLine1_{{ order.public_id }}'>
+                {{ 'form_address_address_1' | t }}
+              </label>
+              <input type='text' id='addressLine1_{{ order.public_id }}' name='address' class='og-form-control' ?required='{{ 'required_fields.shipping_address.address' | setting }}'/>
+            </div>
+            <div class='og-form-group'>
+              <label class='og-form-label' for='addressLine2_{{ order.public_id }}'>{{ 'form_address_address_2' | t }}</label>
+              <input type='text' id='addressLine2_{{ order.public_id }}' name='address2' class='og-form-control'/>
+            </div>
+            <div class='og-row'>
+              <div class='og-form-group og-col'>
+                <label class='og-form-label {{ 'og-required' if 'required_fields.shipping_address.city' | setting }}' for='city_{{ order.public_id }}'>
+                  {{ 'form_address_city' | t }}
+                </label>
+                <input type='text' id='city_{{ order.public_id }}' class='og-form-control' name='city' ?required='{{ 'required_fields.shipping_address.city' | setting }}'/>
+              </div>
+              <div class='og-form-group og-col'>
+                <label class='og-form-label {{ 'og-required' if 'required_fields.shipping_address.state_province_code' | setting }}' for='state_{{ order.public_id }}'>
+                  {{ 'form_address_state' | t }}
+                </label>
+                <select class='og-form-select' name='state_province_code' id='state_{{ order.public_id }}' ?required='{{ 'required_fields.shipping_address.state_province_code' | setting }}'>
+                  {% for state_province_code in enabled_states_all %}
+                    <option value='{{ state_province_code }}'>{{ states[state_province_code] }}</option>
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+            <div class='og-row'>
+              <div class='og-form-group og-col'>
+                <label class='og-form-label  {{ 'og-required' if 'required_fields.shipping_address.zip_postal_code' | setting }}' for='zip_{{ order.public_id }}'>
+                  {{ 'form_address_zip' | t }}     
+                </label>
+                <input type='text' id='zip_{{ order.public_id }}' class='og-form-control' name='zip_postal_code' ?required='{{ 'required_fields.shipping_address.zip_postal_code' | setting }}' pattern='^(\\d{5}(-\\d{4})?|[A-Z]\\d[A-Z] *\\d[A-Z]\\d)'/>
+              </div>
+              <div class='og-form-group og-col'>
+                <label class='og-form-label {{ 'og-required' if 'required_fields.shipping_address.country_code' | setting }}' for='country_{{ order.public_id }}'>
+                  {{ 'form_address_country' | t }}
+                </label>
+                <select class='og-form-select' name='country_code' id='country_code_{{ order.public_id }}' ?required='{{ 'required_fields.shipping_address.country_code' | setting }}'>
+                  {% for country_code in enabled_countries %}
+                    {% if country_code === 'US' %}
+                      <option value='{{ country_code }}' selected>{{ countries[country_code] }}</option>
+                    {% else %}
+                      <option value='{{ country_code }}'>{{ countries[country_code] }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class='og-form-group'>
+              <label class='og-form-label {{ 'og-required' if 'required_fields.shipping_address.phone' | setting }}' for='phone_{{ order.public_id }}'>{{ 'form_address_phone' | t }}</label>
+              <input 
+                type='text' id='phone_{{ order.public_id }}' name='phone' ?required='{{ 'required_fields.shipping_address.phone' | setting }}' class='og-form-control' pattern='^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}'/>
+            </div>
+            <div class='og-input-group'>
+              <input type='checkbox' class='og-check-radio' name='use_for_all' id='use_for_all_{{ order.public_id }}' />
+              <label class='og-check-radio-label' for='use_for_all_{{ order.public_id }}'>Use for all shipments</label>
+            </div>
+          </div>
+        </div><!-- /og-dialog-body -->
+
+        <div class="og-dialog-footer">
+            <div class="og-button-wrapper">
+                <button class="og-button og-primary" type="submit" name="change_shipping_address" >{{ 'modal_shipping_add_new_address' | t }}</button>
+            </div>
+            <button class="og-button og-cancel" type="reset">EXIT WITHOUT CHANGES</button>
+        </div><!-- /og-dialog-footer -->
+      </form>
+    </dialog>
+  </sm-dialog>
+  </div><!-- /og-change-shipment-address-button -->
+{% endif %}

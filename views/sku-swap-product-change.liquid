@@ -1,0 +1,66 @@
+<div class="og-change-product-control">
+  {% if 'Date.parse(order.place) - 3 * 86400 * 1000 > new Date().getTime()' | js %}
+  <a class="og-link" data-click-target="og-sku-swap-dialog-{{ subscription.public_id }}"
+    @click="{{ 'SMDialog.open' | js }}">
+    {{ 'change_product_control_label' | t }}
+  </a>
+  {% else %}
+    <a class="og-link" disabled="" data-click-target="og-sku-swap-dialog-{{ subscription.public_id }}"
+    @click="{{ 'SMDialog.open' | js }}">
+    {{ 'change_product_control_label' | t }}
+  </a>
+  {% endif %}
+
+  <sm-dialog id="og-sku-swap-dialog-{{ subscription.public_id }}">
+    <dialog class="og-dialog-wide">
+      <form
+        action="{{ 'change_product' | action }}"
+        @success="{{ 'SMDialog.close' | js }}"
+        @reset="{{ 'SMDialog.close' | js }}"
+      >
+        {% set dialog_header_text = 'modal_change_product_header' | t %}
+        {% include 'dialog-header' %}
+        
+        <div class="og-dialog-body">
+          <input type="hidden" value="{{ subscription.public_id }}" name="subscription">
+          <div class="og-sku-swap-display" data-items>
+            <div class="og-no-result-message" data-no-results>{{ 'change_product_search_no_results' | t }}</div>
+            {% for alt_product_id in alternative_product_ids %}
+              {% set alt_product = products | find(id=alt_product_id) %}
+              {% if alt_product %}
+              <div class="og-input-group">
+                <input
+                  required
+                  type="radio"
+                  name="product"
+                  value="{{alt_product_id}}"
+                  class="visually-hidden"
+                  id="alternative-product-{{alt_product_id}}-for-{{product.external_product_id}}-in-{{order_item.public_id}}"
+                >
+                <label
+                  data-product-name="{{ alt_product.name }}"
+                  for="alternative-product-{{alt_product_id}}-for-{{product.external_product_id}}-in-{{order_item.public_id}}"
+                >
+                  <div class="flex-row og-order-item-info og-text-sm">
+                    <div class="og-thumbnail">
+                      <img src="{{ alt_product.image_url }}" alt="" onerror="this.style.display='none';">
+                    </div>
+                    <div class="og-product-name-price">
+                      <span class="og-text-sm">{{ alt_product.name }} — </span>
+                      <span class="og-final-price">{{ alt_product.price | currency(order.currency_code) }}</span>
+                    </div>
+                  </div>
+                </label>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <div class="og-dialog-footer">
+          <button class="og-button og-primary" type="submit" name="change_product">{{ 'modal_change_product_save' | t }}</button>
+          <button class="og-button og-cancel" type="reset">EXIT WITHOUT CHANGES</button>
+        </div>
+      </form>
+    </dialog>
+  </sm-dialog>
+</div>

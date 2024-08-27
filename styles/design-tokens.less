@@ -1,0 +1,117 @@
+/*
+  Less variables defining the design tokens used throught the SM. 
+  Basic knobs variables are not defined here, only in variables.less.
+ */
+
+// we want to use rem units for sizes, since it scales with user preferences
+// however, some sites (e.g. Shopify's Dawn theme) set a smaller root font size than we expect, messing up our design
+// by using this mixin, we can ensure that the rem unit will always be at least 16px
+.safe-rem(@value) {
+  @MIN_REM_SIZE: 16px;
+  @result: ~'max(@{value}rem, @{value} * @{MIN_REM_SIZE})';
+}
+
+// sizes
+@size-0-5: .safe-rem(0.125) [ @result]; /* 2px */
+@size-1: .safe-rem(0.25) [ @result]; /* 4px */
+@size-1-5: .safe-rem(0.375) [ @result]; /* 6px */
+@size-2: .safe-rem(0.5) [ @result]; /* 8px */
+@size-2-5: .safe-rem(0.625) [ @result]; /* 10px */
+@size-3: .safe-rem(0.75) [ @result]; /* 12px */
+@size-3-5: .safe-rem(0.875) [ @result]; /* 14px */
+@size-4: .safe-rem(1) [ @result]; /* 16px */
+@size-4-5: .safe-rem(1.125) [ @result]; /* 18px */
+@size-5: .safe-rem(1.25) [ @result]; /* 20px */
+@size-6: .safe-rem(1.5) [ @result]; /* 24px */
+@size-6-5: .safe-rem(1.625) [ @result]; /* 26px */
+@size-7: .safe-rem(1.75) [ @result]; /* 28px */
+@size-8: .safe-rem(2) [ @result]; /* 32px */
+@size-8-5: .safe-rem(2.125) [ @result]; /* 34px */
+@size-9: .safe-rem(2.25) [ @result]; /* 36px */
+@size-10: .safe-rem(2.5) [ @result]; /* 40px */
+@size-11: .safe-rem(2.75) [ @result]; /* 44px */
+@size-12: .safe-rem(3) [ @result]; /* 48px */
+@size-14: .safe-rem(3.5) [ @result]; /* 56px */
+@size-15: .safe-rem(3.75) [ @result]; /* 60px */
+@size-16: .safe-rem(4) [ @result]; /* 64px */
+@size-20: .safe-rem(5) [ @result]; /* 80px */
+@size-24: .safe-rem(6) [ @result]; /* 96px */
+
+// fonts
+@line-height: 1.5;
+
+@text-xxs: @size-2-5;
+@text-xs: @size-3;
+@text-sm: @size-3-5;
+@text-base: @size-4;
+@text-lg: @size-4-5;
+@text-xl: @size-5;
+
+@container-width: 1120px;
+
+// colors
+@color-primary: #4318ff;
+@color-secondary: #59699c;
+@color-pay-as-you-go: #1023b7;
+@color-prepaid: #853dfc;
+@color-one-time: #00003e;
+@color-border: #e9edf7;
+@color-neutral-background: #f4f7fe;
+@color-badge-text: #ffffff;
+@color-image-background: @color-neutral-background;
+@color-page-title: #ffffff;
+@color-secondary-bg: #f8fbff;
+@color-tertiary: #2b3674;
+@color-highlight: #000000;
+@color-notification-success-bg: #d3fbe7;
+@color-notification-error-bg: #f1dbd7;
+@container-background: #ffffff;
+@color-order-highlight: #f2f1ff;
+
+@color-button-font: #ffffff;
+@color-button-secondary-font: @color-primary;
+@color-button-secondary-bg: #f4f7fe;
+
+@color-select-focus-outline: #3c16e6;
+
+@color-active-card-outline: #b9a9ff;
+@color-inactive-card-outline: #e8ecf7;
+
+@color-error: #af2b13;
+@color-error-secondary: #f9ddd8;
+
+@color-disabled: #46547c;
+
+@color-dialog-backdrop: #06091a1f;
+@dialog-max-width: 525px;
+
+@color-menu-button: @color-tertiary;
+@color-menu-button-bg: @container-background;
+@color-menu-button-bg-hover: #e3ddfd;
+
+@color-content-skeleton: #f3f3f6;
+
+// shadows
+@shadow-color-light: rgba(23, 19, 49, 0.05);
+@shadow-color-med: rgba(23, 19, 47, 0.1);
+@shadow-color-dark: rgba(23, 19, 49, 0.2);
+
+@box-shadow-sm:
+  0px 0px 1px 0px @shadow-color-dark,
+  0px 2px 1px 0px @shadow-color-light;
+
+// border radii
+@border-radius-xs: 4px;
+@border-radius-sm: 8px;
+@border-radius-md: 20px;
+@button-radius: 12px;
+
+// device breakpoints
+@mobile-width: 575px;
+@mobile-width-sm: 390px;
+
+// svgs
+@chevron-down: url("data:image/svg+xml,%3Csvg width='14' height='8' viewBox='0 0 14 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7.00098 6.53846L13 1' stroke='%234318FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+@chevron-down-sm: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5.50073 5L10 1' stroke='%234318FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+@plus: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9IkdOQy5jb20vQWNjb3JkaW9uIE9wZW4iPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMTEuMzc1IDMuMjVWMkg4Ljg3NVYzLjI1VjguODc1SDMuMjVIMlYxMS4zNzVIMy4yNUg4Ljg3NVYxN1YxOC4yNUgxMS4zNzVWMTdWMTEuMzc1SDE3SDE4LjI1VjguODc1SDE3SDExLjM3NVYzLjI1WiIgZmlsbD0iIzFBMUExQSIvPgo8L2c+Cjwvc3ZnPgo=");
+@minus: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE4LjI1IDExLjVIMTdIMy4yNUgyVjlIMy4yNUgxN0gxOC4yNVYxMS41WiIgZmlsbD0iIzFBMUExQSIvPgo8L3N2Zz4K");

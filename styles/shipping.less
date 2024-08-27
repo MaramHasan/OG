@@ -1,0 +1,319 @@
+.og-shipping-summary-container {
+  display: flex;
+  flex-direction: column;
+  gap: @size-5;
+  padding: @size-2 0;
+  overflow-y: hidden;
+
+  @media (min-width: @mobile-width) {
+    flex-direction: row;
+  }
+}
+
+.og-shipping-addresses,
+.og-payments {
+  display: flex;
+  gap: @size-5;
+  overflow-y: auto;
+}
+
+.og-payments {
+  padding: @size-2 0;
+}
+
+.og-shipping-address,
+.og-shipping-card {
+  border: 1px solid @color-inactive-card-outline;
+  border-radius: @border-radius-sm;
+  text-align: left;
+  padding: 0;
+}
+
+.og-shipping-address,
+button.og-shipping-card {
+  display: flex;
+  gap: @size-5;
+  background: none;
+  cursor: pointer;
+  outline: inherit;
+
+  &[aria-current='true'] {
+    order: 1;
+    border-color: @color-active-card-outline;
+  }
+
+  &:focus-visible {
+    outline-offset: 4px;
+    outline-style: solid;
+    outline-color: @color-primary;
+  }
+}
+
+.og-shipping-address {
+  border: 0;
+  cursor: initial;
+}
+
+.og-payment-container {
+  border: 1px solid @color-active-card-outline;
+  border-radius: @border-radius-sm;
+  padding: @size-2-5 @size-3-5;
+}
+
+.og-shipping-address-form {
+  order: 2;
+}
+
+.og-payment-container,
+.og-shipping-address-container,
+.og-add-shipping-address,
+.og-shipping-wrapper {
+  width: 25%;
+  min-width: 214px;
+  min-height: 83px;
+  font-size: @text-sm;
+  position: relative;
+
+  a,
+  .og-tile-action {
+    position: absolute;
+    right: 0;
+    top: @size-1;
+    font-size: @text-xs;
+    color: @color-primary;
+    text-decoration: none;
+    font-weight: 700;
+    display: flex;
+    vertical-align: center;
+    gap: @size-1;
+  }
+
+  .og-edit-shipping-button {
+    padding: @size-2;
+  }
+}
+
+.og-add-shipping-address {
+  padding: @size-2-5 @size-3-5;
+}
+
+.og-shipping-address-container {
+    margin-top: 4px;
+    min-height: auto;
+    font-weight: 700;
+    @media (max-width: 1024px) {
+        margin-top: 0;
+        width: auto;
+        min-width: auto;
+    }
+}
+
+
+.og-address-city-state-zip {
+  @media (max-width: 1024px) {
+      display: none;
+  }
+}
+
+
+.og-edit-address-form {
+  gap: @size-3;
+  display: grid;
+  grid-template-columns: 1fr;
+  max-height: 55vh;
+  overflow: auto;
+  padding: @size-1;
+  font-size: @text-sm;
+
+  input {
+    border-radius: @border-radius-xs;
+    border: 1px solid @color-border;
+    padding: @size-1;
+  }
+
+  label {
+    color: @color-secondary;
+  }
+
+  .og-full-width {
+    grid-column: 1 / -1;
+  }
+
+  .og-half-width {
+    grid-column: span 1;
+  }
+
+  @media (min-width: @mobile-width) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  // select labels before required inputs
+  label:has(+ [required]):after {
+    content: '*';
+    color: @color-error;
+  }
+}
+
+sm-country-state-dropdown {
+  display: contents;
+}
+
+.og-column-form-gap {
+  column-gap: @size-3;
+  align-items: stretch;
+}
+
+.og-shipping-subtitle {
+  margin-bottom: @size-4;
+}
+
+.og-add-shipping-address {
+  align-self: start;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: @color-primary;
+  width: 25%;
+  min-width: 214px;
+  text-align: center;
+  font-size: @text-xs;
+
+  @media (min-width: @mobile-width) {
+    font-size: @text-sm;
+  }
+}
+
+// we don't want the modal treated like a flex item, resulting in an extra gap that isn't needed
+.og-change-shipping-modal,
+.og-change-shipping-modal sm-dialog {
+  display: contents;
+}
+
+.og-shipping-name {
+  padding-right: @size-5;
+  word-break: break-word;
+}
+
+.og-shipment-header {
+    svg {
+        margin-bottom: 4px;
+    }
+}
+
+.og-shipment-header-controls {
+    display: flex;
+    justify-content: space-between;
+    @media screen and (max-width: 1024px) {
+        justify-content: flex-end;
+    }
+    
+    @media (max-width: 1024px) {
+        justify-content: end;
+    }
+    
+    &.membership-control {
+        justify-content: end;
+    }
+    
+    .controls-wrapper {
+        display: flex;
+        gap: 12px;
+        @media screen and (max-width: 1024px) {
+            .og-button-send-now,
+            .og-button-skip-button{
+                display: none;
+            }
+        }
+        
+        button {
+            min-width: 175px;
+        }
+    }
+}
+
+.shipment-header-product-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 48px;
+    width: 100%;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #E7E6E6;
+    
+     @media (max-width: 1024px) {
+         flex-direction: column;
+         gap: 24px;
+     }
+    
+    .og-shipment-header {
+        width: 37.75%;
+        @media (max-width: 1024px) {
+            width: 100%;
+        }
+    }
+    
+    .og-order-product-images {
+        width: 62.24%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 24px;
+        
+        .slick-prev, .slick-next {
+            background: #E60D2E;
+            width: 40px;
+            height: 40px;
+            border-radius: 50px;
+            opacity: 1;
+            
+            &.slick-disabled {
+                display: none !important;
+            }
+
+            &:before {
+                position: absolute;
+                top: 15px;
+                border-color: #fff;
+                border-width: 2px 2px 0 0;
+            }
+        }
+        
+        .slick-next {
+            &:before {
+                left: 14px;
+            }
+        }
+        
+        .slick-prev {
+            &:before {
+                left: 17px;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            width: 100%;
+            justify-content: flex-start;
+        }
+    }
+}
+
+.og-shipping,
+.og-shipment-info {
+    font-size: 14px;
+}
+
+.og-shipment-info {
+    color: #E60D2E;
+    span {
+        color: #1A1A1A;
+    }
+    .og-shipment-date-header {
+        color: #E60D2E;
+    }
+}
+    
+.og-shipping {
+    @media (max-width: 1024px) {
+        display: flex;
+        gap: 4px;
+    }
+}

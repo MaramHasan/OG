@@ -1,0 +1,76 @@
+<div class="og-shipment-footer">
+    <div class="og-payment-shipping pro-access-product">
+        {% if payment %}
+            {% set payment_will_be_expired = (payment.orders | find(id=subscription.public_id)) | get('payment_will_be_expired') %}
+
+            <div class="og-billing">
+                <div class="og-footer-header">
+                    {% if pro_subscription == true or health_subscription == true %}
+                        Payment Method
+                    {% else %}
+                        {{ 'shipment_unsent_footer_billing_header' | t }}
+                    {% endif %}
+                </div>
+                <div class="og-billing-details-container">
+
+                {% if not 'cc_recycling_enabled' | setting %}
+                    {% if payment.is_expired %}
+                    <div class="og-payment-is-expired">
+                        {{ 'payment_is_expired' | t }}
+                    </div>
+                    {% elseif payment_will_be_expired %}
+                    <div class="og-payment-will-be-expired">
+                        {{ 'payment_will_be_expired' | t }}
+                    </div>
+                    {% elseif payment.is_expiring %}
+                    <div class="og-payment-is-expiring">
+                        {{ 'payment_is_expiring' | t }}
+                    </div>
+                    {% endif %}
+                {% endif %}
+
+                <div og-payment-id="{{payment.public_id}}">
+                    
+                    {% if payment.cc_type  and (payment.label !== "payPal" or payment.label !== "paypal" or payment.label !== "Paypal" or payment.label !== "PayPal") %}
+                    <span class="og-payment-type">{{ payment.cc_type }}</span>
+                    {% else %}
+                    <span class="og-payment-type">{{ payment.label }}</span>
+                {% endif %}
+                    {% if payment.cc_number_ending %}
+                    <span class="og-payment-last-4">{{ 'form_billing_ending_in' | t }}</span>
+                    {% endif %}
+                </div>
+                <div class="og-payment-expiration-date">
+                    {% if payment.public_id %}
+                    {% if payment.label !== "PayPal" %}
+                        <span class="og-exp-date">{{ 'form_billing_expiration_date' | t }}</span>
+                    {% endif %}
+                    {% endif %}
+                </div>
+                {% if 'external_payment_enabled' | setting %}
+                <a class="og-link og-edit-payment" href="{{ 'external_payment_url' | setting }}">
+                    {% if pro_subscription == true  or health_subscription == true %}
+                        Update Payment </a>
+                    {% else %}
+                        {{ 'shipment_unsent_footer_billing_edit' | t }}</a>
+                    {% endif %}
+                {% endif %}
+                </div>{# /og-billing-details-container #}
+            </div>{# /og-billing #}
+        {% endif %}
+
+        {% if not subscription | get('extra_data.hidden') == true %}
+            {# Order pricing details #}
+            <div class="og-total-table">
+                <div class="og-footer-header">{{ 'shipment_sent_price_total' | t }}</div>
+                <table role="grid">
+                    <tr class="og-pricing-line og-shipment-sub-total">
+                    <th class="og-total-label" scope="row">{{ 'shipment_sent_price_subtotal' | t }}</th>
+                    <td class="og-total-value">{{ product.price | currency }}</td>
+                    </tr>
+
+                </table>
+            </div>{# /og-total-table #}
+        {% endif %}
+    </div>
+</div>

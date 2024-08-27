@@ -1,0 +1,99 @@
+{% set show_og_order_section = pro_subscription == true or (health_subscription == false and pro_subscription == false) or (health_subscription == true and subscription.extra_data and subscription.extra_data.subscription_bonus != true) %}
+{% set order_is_about_to_be_processed = order.status == 'UNSENT' and 'Date.parse(order.place) - 3 * 86400 * 1000 > new Date().getTime()' | js %}
+{% if show_og_order_section %}
+<div class="og-content-wrapper og-unsent-shipment" data-pro-product="{{pro_subscription}}">
+  <sm-toggle class="og-order-toggle">
+    {% set current_order_items = order_items | select(order=order.public_id) %}
+    {% if order.status == 'UNSENT' %}
+      {% include 'order-header' %}
+    {% endif %}
+    <div data-toggle-content>
+        {# Shipment controls #}
+            {% if pro_subscription == false and health_subscription == false %}
+                    <div class="og-order-actions og-shipment-header-controls mobile-only">
+                        {% include 'send-now' %}
+                        {% include 'change-date' %}
+                    </div>
+            {% endif %}
+        {# Shipment controls #}
+        {# shipment status #}
+        {% if pro_subscription == false and health_subscription == false %}
+            {% if order_counter == 1 %}
+                <div class="og-shipment-header-label og-order-status">
+                    {% if not pro_subscription %}
+                        {% if 'Date.parse(order.place) - 4 * 86400 * 1000 > new Date().getTime()' | js %}
+                            <div class="order-last-date"><img src="https://storage.googleapis.com/ordergroove-static-assets/gnc/gnc_yellow.png" style="width:17px; height:17px; margin-bottom:2px;"> Last day to make changes: {{ 'lastDayForOrder(order)' | js  }}</div>
+                            {% elseif 'Date.parse(order.place) - 3 * 86400 * 1000 > new Date().getTime()' | js %}
+                            <div class="order-last-day"><img src="https://storage.googleapis.com/ordergroove-static-assets/gnc/gnc_yellow.png" style="width:17px; height:17px; margin-bottom:2px;"> Last day to make changes: Today.</div>
+                            {% else %}
+                            <div class="no-changes"><img src="https://storage.googleapis.com/ordergroove-static-assets/gnc/gnc_blue.png" style="width:17px; height:17px; margin-bottom:2px;"> Your order is processing. Sorry, no more changes.</div> 
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="og-shipment-header-label og-order-status">
+                    {% if not pro_subscription %}
+                        {% if 'Date.parse(order.place) - 4 * 86400 * 1000 > new Date().getTime()' | js %}
+                            <div class="order-last-date"><img src="https://storage.googleapis.com/ordergroove-static-assets/gnc/gnc_yellow.png" style="width:17px; height:17px; margin-bottom:2px;"> Last day to make changes: {{ 'lastDayForOrder(order)' | js  }}</div>
+                            {% elseif 'Date.parse(order.place) - 3 * 86400 * 1000 > new Date().getTime()' | js %}
+                            <div class="order-last-day"><img src="https://storage.googleapis.com/ordergroove-static-assets/gnc/gnc_yellow.png" style="width:17px; height:17px; margin-bottom:2px;"> Last day to make changes: Today.</div>
+                            {% else %}
+                            <div class="no-changes"><img src="https://storage.googleapis.com/ordergroove-static-assets/gnc/gnc_blue.png" style="width:17px; height:17px; margin-bottom:2px;"> Your order is processing. Sorry, no more changes.</div> 
+                        {% endif %}
+                    {% endif %}                       
+                    </div>
+            {% endif %}
+        {% endif %}
+        {# shipment status #}
+
+        {# Shipment body #}
+            <div class="og-order-items og-shipment-body">
+                {% for order_item in current_order_items %}
+                    {% set restricted_products_and_restricted_state = false %}
+                    {% set product = products | find(id=order_item.product) %}
+                    {% set subscription = subscriptions | find(id=order_item.subscription) %}
+                    {# Order item #}
+                    {% include 'order-item-and-product/unsent-order-item' %}
+                {% endfor %}
+            </div>
+        {# /og-shipment-body #}
+
+        {# next order banner. #}
+        {% set is_with_banner = "" %}
+            {% if order_counter == 1 %}
+            {% set is_with_banner = "og-with-banner" %}
+                <div class="og-upsell og-product">
+                <div class="og-product-info">
+                <div class="og-product-description">
+                    <h3 class="og-upsell-header">Need something else?</h3>
+                    <div class="og-upsell-text">10% off + Free Shipping with GNC Routines</div>
+                </div>
+                </div>
+                <div class="og-item-controls-container">
+                <a class="og-upsell-button" href="/shop-gnc-routines/">
+                    Add items to your next order
+                </a>
+                </div>
+                </div>
+            {% endif%}
+        {# /next order banner. #}
+    
+        {# Shipment footer #}
+            <div class="og-shipment-footer {{ is_with_banner }}">
+                {% if pro_subscription or health_subscription %}
+                    <div class="og-payment-shipping pro-access-product">
+                        {% include 'order-summary/billing-shipping-details' %}
+                        {% include 'order-summary/order-total' %}
+                    </div>{# /og-payment-shipping #}
+                {% else %}
+                    <div class="og-payment-shipping">
+                    {% include 'order-summary/billing-shipping-details' %}
+                    {% include 'order-summary/order-total' %}
+                    </div>{# /og-payment-shipping #}
+                {% endif %}
+            </div>
+        {# /og-shipment-footer #}
+    </div>
+  </sm-toggle>
+</div>
+{% endif %}

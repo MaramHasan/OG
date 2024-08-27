@@ -1,0 +1,48 @@
+{% set current_order_items = order_items | select(order=order.public_id) %}
+{% set blockActions = false %}
+{% set health_subscription = false %}
+{% for order_item in current_order_items %}
+  {% set product = products | find(id=order_item.product) %}
+  {% set subscription = subscriptions | find(id=order_item.subscription) %}
+    {% if subscription and subscription.extra_data and subscription.extra_data.pro_membership %}
+      {% set blockActions = true %}
+    {% endif %}
+    {% if subscription and subscription.extra_data and subscription.extra_data.health_membership %}
+      {% set health_subscription = true %}
+    {% endif %}
+{% endfor %}
+
+<div class="og-send-shipment-now-button">
+  {% if blockActions or health_subscription %}
+    <button disabled class="og-button og-button-send-now og-disabled og-primary">{{ 'shipment_send_now_button' | t }}</button>
+  {% else %}
+    <button
+      class="og-button og-button-send-now og-primary"
+      data-size="lg"
+      @click="{{ '() => SMDialog.open("og-send-order-now-dialog-" + order.public_id)' | js }}"
+    >
+      {{ 'shipment_send_now_button' | t }}
+    </button>
+  {% endif %}
+
+  <sm-dialog id="og-send-order-now-dialog-{{ order.public_id }}">
+    <dialog>
+      <form
+        action="{{ 'send_now' | action }}"
+        @success="{{ 'SMDialog.close' | js }}"
+        @reset="{{ 'SMDialog.close' | js }}"
+      >
+        {% set dialog_header_text = 'modal_send_now_header' | t %}
+        {% include 'dialog-header' %}
+        <div class="og-dialog-body">
+          <input type="hidden" name="order" value="{{order.public_id}}">
+          <div class="og-dialog-body-content">{{ 'modal_send_now_body' | t }}</div>
+        </div>
+        <div class="og-dialog-footer og-dialog-stacked-buttons">
+          <button class="og-button og-emphasis-button og-primary" type="submit" name="send_now">{{ 'modal_send_now_save' | t }}</button>
+          <button class="og-button og-secondary" type="reset">EXIT WITHOUT CHANGES</button>
+        </div>
+      </form>
+    </dialog>
+  </sm-dialog>
+</div>

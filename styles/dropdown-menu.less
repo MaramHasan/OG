@@ -1,0 +1,46 @@
+sm-dropdown {
+  display: block;
+  width: fit-content;
+  position: relative;
+
+  [aria-expanded='true'] + [role='menu'] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  [role='menu'] {
+    display: none;
+    position: absolute;
+    background: @color-menu-button-bg;
+    min-width: 180px;
+    max-width: fit-content;
+    padding: @size-2;
+    box-shadow: 0px 2px 4px 0px @shadow-color-med;
+    border-radius: @border-radius-xs;
+    background: @container-background;
+    z-index: 1;
+
+    @media (min-width: @mobile-width) {
+      right: @size-8;
+    }
+  }
+
+  button[role='menuitem'] {
+    appearance: none;
+    border: none;
+    background: @color-menu-button-bg;
+    font-size: @text-sm;
+    color: @color-menu-button;
+    width: 100%;
+    padding: @size-1 @size-2;
+    border-radius: @border-radius-xs;
+    cursor: pointer;
+    text-align: left;
+
+    &:hover,
+    &:focus-visible {
+      background: @color-menu-button-bg-hover;
+      outline: none;
+    }
+  }
+}

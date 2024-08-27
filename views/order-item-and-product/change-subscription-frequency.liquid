@@ -1,0 +1,81 @@
+{% if 'Date.parse(order.place) - 3 * 86400 * 1000 > new Date().getTime()' | js %}
+    {% set health_subscription = false %}
+    {% set blockActions = false %}
+    
+    {% if subscription and subscription.extra_data and subscription.extra_data.pro_membership %}
+      {% set blockActions = true %}
+    {% endif%}
+      
+    {% if subscription and subscription.extra_data and subscription.extra_data.health_membership %}
+      {% set health_subscription = true %}
+    {% endif%}
+    
+{% if blockActions == true or health_subscription == true %}
+
+<form>
+    <select name="frequency" disabled="disabled" class="og-disabled">
+        {% set frequency_text = 'frequency_period' | t(every = subscription.every, period = subscription.every_period) %}
+        <option>{{ frequency_text }}</option>
+    </select>
+</form>
+{% else %}
+<form action="{{ 'change_subscription_frequency' | action }}" @finally={{ 'enable_form_elements' | js }} @submit={{ 'disable_form_elements' | js }}>
+  <input type="hidden" required name="subscription" value="{{subscription.public_id}}"/>
+  <select name="frequency" @change={{ 'submit_form_onchange' | js }}/>
+    {% set subscription_frequency_still_exists = false %}
+    {% for frequency in 'frequencies' | setting %}
+      {% set frequency_text = 'frequency_period' | t(every = frequency.every, period = frequency.period) %}
+      {% if frequency.every == subscription.every and frequency.period == subscription.every_period %}
+        {% set subscription_frequency_still_exists = true %}
+        <option selected value="{{ frequency.every }}_{{ frequency.period }}">{{ frequency_text }}</option>
+      {% else %}
+        <option value="{{ frequency.every }}_{{ frequency.period }}">{{ frequency_text }}</option>
+      {% endif %}
+
+    {% endfor %}
+
+    {# If an order still uses an old subscription value, keep it as an option. #}
+    {% if not subscription_frequency_still_exists %}
+      <option selected value="{{ subscription.every }}_{{ subscription.every_period }}"></option>
+    {% endif %}
+  </select>
+
+</form>
+{% endif %}
+
+{% else %}
+
+{% if subscription and subscription.extra_data and subscription.extra_data.pro_membership %}
+
+<form>
+    <select name="frequency" disabled="disabled" class="og-disabled">
+        {% set frequency_text = 'frequency_period' | t(every = subscription.every, period = subscription.every_period) %}
+        <option>{{ frequency_text }}</option>
+    </select>
+</form>
+{% else %}
+<form action="{{ 'change_subscription_frequency' | action }}" @finally={{ 'enable_form_elements' | js }} @submit={{ 'disable_form_elements' | js }}>
+  <input type="hidden" required name="subscription" value="{{subscription.public_id}}"/>
+  <select name="frequency" @change={{ 'submit_form_onchange' | js }} disabled/>
+    {% set subscription_frequency_still_exists = false %}
+    {% for frequency in 'frequencies' | setting %}
+      {% set frequency_text = 'frequency_period' | t(every = frequency.every, period = frequency.period) %}
+      {% if frequency.every == subscription.every and frequency.period == subscription.every_period %}
+        {% set subscription_frequency_still_exists = true %}
+        <option selected value="{{ frequency.every }}_{{ frequency.period }}">{{ frequency_text }}</option>
+      {% else %}
+        <option value="{{ frequency.every }}_{{ frequency.period }}">{{ frequency_text }}</option>
+      {% endif %}
+
+    {% endfor %}
+
+    {# If an order still uses an old subscription value, keep it as an option. #}
+    {% if not subscription_frequency_still_exists %}
+      <option selected value="{{ subscription.every }}_{{ subscription.every_period }}"></option>
+    {% endif %}
+  </select>
+
+</form>
+{% endif %}
+
+{% endif %}

@@ -1,0 +1,30 @@
+{# Order pricing details #}
+<div class="og-total-table">
+  <div class="og-footer-header">{{ 'shipment_sent_price_total' | t }}</div>
+  <table role="grid">
+   
+    {% if pro_subscription == false and health_subscription == false and order_is_about_to_be_processed == true %}
+        <tr class="og-pricing-line og-shipment-discount-total">
+          <th class="og-total-label" scope="row">{{ 'shipment_sent_price_autosave' | t }}</th>
+          <td class="og-total-value">{{ order.discount_total | currency }}</td>
+        </tr>
+    {% endif %}
+
+    <tr class="og-pricing-line og-shipment-sub-total">
+      <th class="og-total-label" scope="row">{{ 'shipment_sent_price_subtotal' | t }}</th>
+      <td class="og-total-value">{{ order.sub_total | currency }}</td>
+    </tr>
+    {% if pro_subscription == false and health_subscription == false and order_is_about_to_be_processed == true %}
+        <tr class="og-pricing-line og-shipment-shipping-total">
+          <th class="og-total-label" scope="row">{{ 'shipment_sent_price_shipping' | t }}</th>
+          {% if enable_adult_signature_delivary_fee %}
+            <td class="og-total-value">{{shipping_fee}}</td>
+          {% elseif order.shipping_total == '0.00' %}
+                <td class="og-total-value">FREE</td>
+          {% else %}
+            <td class="og-total-value">{{ order.shipping_total | currency }}</td>
+          {% endif %}
+        </tr>
+    {% endif %}
+  </table>
+</div>{# /og-total-table #}

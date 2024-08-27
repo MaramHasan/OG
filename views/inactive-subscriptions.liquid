@@ -1,0 +1,63 @@
+{% include 'inactive-pro-subscription' %}
+{% include 'inactive-health-subscription' %}
+
+<div id= "routines-pd-component"></div>
+
+{# Inactive subscriptions entry point #}
+<section id="og-inactive-subscriptions">
+    {% set showheader = false %}
+  {% for subscription in subscriptions | reject('live') %}
+  {% set subscription_ended = 'new Date(new Date(subscription.start_date).setFullYear(new Date(subscription.start_date).getFullYear() + 1)).getTime() < new Date().getTime()'| js %}
+  {% set subscription_month_ended = 'new Date(new Date(subscription.start_date).setMonth(new Date(subscription.start_date).getMonth() + 1)).getTime() < new Date().getTime()'| js %}
+{% if subscription and subscription.extra_data and (subscription.extra_data.pro_membership != true and subscription.extra_data.health_membership != true or (health_product_displayed == false and subscription_month_ended and subscription.extra_data.health_membership) or (pro_product_displayed == false and subscription_ended and subscription.extra_data.pro_membership)) %}
+    {% if index === 0 or (showheader === true and index === 1) %}
+      <h1 class="og-title og-shipment-header-label">{{ 'subscriptions_inactive_header' | t }}</h1>
+    {% endif %}
+    {% set inactive_order_counter = inactive_order_counter + 1 %}
+	{% if not subscription | get('extra_data.hidden') == true %}
+	{% set product = products | find(id=subscription.product) %}
+	{% set disableButtonClass = '' %}
+	{% if product and not product.autoship_enabled %}
+        {% set disableButtonClass = 'added-warning-msg' %}
+    {% endif %}
+    <div class="og-inactive-subscription {{disableButtonClass}}  og-inactive-subscription-tile">
+    
+      {% if product %}
+        <div class="og-product">
+          <div class="og-product-image-container">
+            <img
+              class="og-product-image"
+              loading="lazy"
+              alt="{{ product.name }}"
+              src="{{ product.image_url | if_defined }}"
+              width="200"
+              height="200"
+            />
+            <div class="og-name-price-controls-container">
+            <div class="og-description-and-controls">
+              <div class="og-product-description">
+                <h3 class="og-product-name">
+                  <a href="{{ product.detail_url | if_defined }}">{{ product.name }}</a>
+                </h3>
+                <div class="og-cancelled-text-date">
+                    <span class="og-cancelled-text">{{ 'subscription_inactive_cancelled_on' | t }}</span>
+                    <span class="og-cancelled-date">{{ subscription.cancelled | date }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+          <div class="og-name-price-controls-container">
+            <div class="og-inactive-subscription-actions  show-only-desktop">
+              {% include 'reactivate-subscription' %}
+            </div>{# /og-inactive-subscription-actions #}
+          </div>{# og-name-price-controls-container #}
+        </div>{# /og-product #}
+      {% endif %}
+    </div>{# /og-inactive-subscription #}
+	{% endif %}
+	{% elseif index === 0 %}
+	    {% set showheader = true %}
+	{% endif %}
+  {% endfor %}
+</section>{# /og-inactive-subscriptions #}

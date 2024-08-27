@@ -1,0 +1,207 @@
+	{% set quantity_control_config = 'quantity_control_config' | setting %}
+	{% set quantity_still_exists = false %}
+	{% set health_subscription = false %}
+	{% set blockActions = false %}
+	{% set quantity_limit = 12 %}
+
+	{% if 'Date.parse(order.place) - 3 * 86400 * 1000 > new Date().getTime()' | js %}
+	{% if subscription %}
+		{% if product and product.extra_data and product.extra_data.quantity_limit %}
+			{% set quantity_limit = product.extra_data.quantity_limit %}
+		{% endif%}
+	  {# Quantity Change for Subscription Items #}
+		{% if subscription and subscription.extra_data and subscription.extra_data.pro_membership %}
+		  {% set blockActions = true %}
+		{% endif%}
+		  
+		{% if subscription and subscription.extra_data and subscription.extra_data.health_membership %}
+		  {% set health_subscription = true %}
+		{% endif%}
+
+	  {% if blockActions == true or health_subscription == true %}
+		<form class="og-quantity" action="">
+			<span>{{ 'item_controls_sending' | t }}</span>
+			<input
+				type="number"
+				name="quantity"
+				value="{{ order_item.quantity }}"
+				disabled="disabled"
+				class="og-disabled"
+			  />
+		</form>
+	  {% else %}
+
+	  <form class="og-quantity" action="{{ 'change_quantity' | action }}"
+		@finally={{ 'enable_form_elements' | js }}
+		@submit={{ 'disable_form_elements' | js }}
+	  >
+		<span>{{ 'item_controls_sending' | t }}</span>
+		<input type="hidden" name="subscription" value="{{ order_item.subscription }}"/>
+
+		{% if quantity_control_config.root == "select" %}
+		  <select name="quantity" @change={{ 'submit_form_onchange' | js }} />
+		    {% set stop_loop = false %}
+			{% for quantity in quantity_control_config | get('quantities') %}
+				{% if not stop_loop %}
+					{% if order_item.quantity == quantity %}
+						{% set quantity_still_exists = true %}
+						<option selected value="{{quantity}}">{{ quantity }}</option>
+					{% else %}
+						<option value="{{quantity}}">{{ quantity }}</option>
+					{% endif %}
+					{% if quantity == quantity_limit %}
+							{% set stop_loop = true %}
+						{% endif %}
+                {% endif %}
+			{% endfor %}
+
+			{# If an order still uses an old subscription value, keep it as an option. #}
+			{% if not quantity_still_exists %}
+			  <option value="{{subscription.quantity}}" selected></option>
+			{% endif %}
+		  </select>
+
+		{% else %}
+		  <input
+			type="number"
+			name="quantity"
+			value="{{ order_item.quantity }}"
+			min="{{ quantity_control_config | get('min') | if_defined }}"
+			max="{{ quantity_control_config | get('max') | if_defined }}"
+			@change={{ 'submit_form_onchange' | js }}
+		  />
+		{%endif %}
+	  </form>
+	  {% endif %}
+	{% else %}
+	  {# Quantity Change for One Time Items #}
+	  <form class="og-quantity" action="{{ 'change_item_quantity' | action }}"
+		@finally={{ 'enable_form_elements' | js }}
+		@submit={{ 'disable_form_elements' | js }}
+	  >
+		<span>{{ 'item_controls_sending' | t }}</span>
+		<input type="hidden" name="order_item" value="{{ order_item.public_id }}"/>
+
+		{% if quantity_control_config.root == "select" %}
+		  <select name="quantity" @change={{ 'submit_form_onchange' | js }} />
+			{% for quantity in quantity_control_config | get('quantities') %}
+			  {% if order_item.quantity == quantity %}
+				{% set quantity_still_exists = true %}
+				<option selected value="{{quantity}}">{{ quantity }}</option>
+			  {% else %}
+				<option value="{{quantity}}">{{ quantity }}</option>
+			  {% endif %}
+			{% endfor %}
+
+			{# If an order still uses an old subscription value, keep it as an option. #}
+			{% if not quantity_still_exists %}
+			  <option value="{{order_item.quantity}}" selected></option>
+			{% endif %}
+		  </select>
+
+		{% else %}
+		  <input
+			type="number"
+			name="quantity"
+			value="{{ order_item.quantity }}"
+			min="{{ quantity_control_config | get('min') | if_defined }}"
+			max="{{ quantity_control_config | get('max') | if_defined }}"
+			@change={{ 'submit_form_onchange' | js }}
+		  />
+		{%endif %}
+	  </form>
+	{% endif %}
+
+	{% else %}
+
+	{% if subscription %}
+	  {# Quantity Change for Subscription Items #}
+	  {% if subscription and subscription.extra_data and subscription.extra_data.pro_membership %}
+		<form class="og-quantity" action="">
+			<span>{{ 'item_controls_sending' | t }}</span>
+			<input
+				type="number"
+				name="quantity"
+				value="{{ order_item.quantity }}"
+				disabled="disabled"
+				class="og-disabled"
+			  />
+		</form>
+	  {% else %}
+
+	  <form class="og-quantity" action="{{ 'change_quantity' | action }}"
+		@finally={{ 'enable_form_elements' | js }}
+		@submit={{ 'disable_form_elements' | js }}
+	  >
+		<span>{{ 'item_controls_sending' | t }}</span>
+		<input type="hidden" name="subscription" value="{{ order_item.subscription }}"/>
+
+		{% if quantity_control_config.root == "select" %}
+		  <select name="quantity" @change={{ 'submit_form_onchange' | js }} disabled />
+			{% for quantity in quantity_control_config | get('quantities') %}
+			  {% if order_item.quantity == quantity %}
+				{% set quantity_still_exists = true %}
+				<option selected value="{{quantity}}">{{ quantity }}</option>
+			  {% else %}
+				<option value="{{quantity}}">{{ quantity }}</option>
+			  {% endif %}
+			{% endfor %}
+
+			{# If an order still uses an old subscription value, keep it as an option. #}
+			{% if not quantity_still_exists %}
+			  <option value="{{subscription.quantity}}" selected></option>
+			{% endif %}
+		  </select>
+
+		{% else %}
+		  <input
+			type="number"
+			name="quantity"
+			value="{{ order_item.quantity }}"
+			min="{{ quantity_control_config | get('min') | if_defined }}"
+			max="{{ quantity_control_config | get('max') | if_defined }}"
+			@change={{ 'submit_form_onchange' | js }}
+		  />
+		{%endif %}
+	  </form>
+	  {% endif %}
+	{% else %}
+	  {# Quantity Change for One Time Items #}
+	  <form class="og-quantity" action="{{ 'change_item_quantity' | action }}"
+		@finally={{ 'enable_form_elements' | js }}
+		@submit={{ 'disable_form_elements' | js }}
+	  >
+		<span>{{ 'item_controls_sending' | t }}</span>
+		<input type="hidden" name="order_item" value="{{ order_item.public_id }}"/>
+
+		{% if quantity_control_config.root == "select" %}
+		  <select name="quantity" @change={{ 'submit_form_onchange' | js }} disabled/>
+			{% for quantity in quantity_control_config | get('quantities') %}
+			  {% if order_item.quantity == quantity %}
+				{% set quantity_still_exists = true %}
+				<option selected value="{{quantity}}">{{ quantity }}</option>
+			  {% else %}
+				<option value="{{quantity}}">{{ quantity }}</option>
+			  {% endif %}
+			{% endfor %}
+
+			{# If an order still uses an old subscription value, keep it as an option. #}
+			{% if not quantity_still_exists %}
+			  <option value="{{order_item.quantity}}" selected></option>
+			{% endif %}
+		  </select>
+
+		{% else %}
+		  <input
+			type="number"
+			name="quantity"
+			value="{{ order_item.quantity }}"
+			min="{{ quantity_control_config | get('min') | if_defined }}"
+			max="{{ quantity_control_config | get('max') | if_defined }}"
+			@change={{ 'submit_form_onchange' | js }}
+		  />
+		{%endif %}
+	  </form>
+	{% endif %}
+
+	{% endif %}

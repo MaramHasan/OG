@@ -1,0 +1,38 @@
+{% set product = products | find(id=order_item.product) %}
+{% set subscription = subscriptions | find(id=order_item.subscription) %}
+
+{# Order item #}
+
+<div class="og-product" og-item-id="{{ order_item.public_id }}" og-subscription-id="{{ order_item.subscription }}">
+    {% if product %}
+        <div class="og-product-image-container">
+        <img class="og-product-image" loading="lazy" alt="{{ product.name }}" src="{{ product.image_url | if_defined }}" width="200" height="200"/>
+        </div>
+        <div class="og-name-price-controls-container">
+        <div class="og-description-and-controls">
+            <div class="og-product-description">
+            <h3 class="og-product-name">
+                <a href="{{ product.detail_url | if_defined }}">{{ product.name }}</a>
+            </h3>
+            <h5 class="og-product-display-name">{{ product.display_name }}</h5>
+            {% include 'order-item-and-product/order-item-price' %}
+            <div class="og-quantity og-wrapper">
+                {{ 'product_quantity' | t }}
+                <span>{{ order_item.quantity }}</span>
+            </div>
+            </div>{# /og-product-description #}
+        </div>{# /og-description-and-controls #}
+        </div>{# /og-name-price-controls-container #}
+        {% if index == 0 %}
+            <div class="og-sent-shipment-help og-desktop"><h3>{{ 'shipment_sent_help' | t}}</h3>
+            <div>{{ 'shipment_sent_help_contact' | t }}</div>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>{# /og-product #}
+
+{% if index == 0 %}
+    <div class="og-sent-shipment-help og-mobile"><h3>{{ 'shipment_sent_help' | t}}</h3>
+        <div>{{ 'shipment_sent_help_contact' | t }}</div>
+    </div>
+{% endif %}

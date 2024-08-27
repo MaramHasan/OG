@@ -1,0 +1,64 @@
+{# This template serves as the entrypoint of the SMI #}
+{% set pro_product_displayed = false %}
+{% set health_product_displayed = false %}
+{% set shipping_fee = '$4.99' %}
+{% set restricted_states = [ "NY" ] %}
+{% set inactive_order_counter = 0 %}
+{% set inactive_pro_order_counter = 0 %}
+{% set inactive_health_order_counter = 0 %}
+
+<div class="og-container">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+    rel="stylesheet"
+  >
+  {% if loading %}
+    <div class="og-content-skeleton" /></div>
+  {% elseif global_error %}
+    <div class="og-page-error">{{ 'page_error' | t }}</div>
+  {% elseif orders.length or (subscriptions | reject('live')).length %}
+    {# The markup within this if block is shown if the customer is logged in and has an order or subscription #}
+    <section id="og-smi-main-header" aria-labelledby="og-smi-main-title">
+      <h1 class="og-title" id="og-smi-main-title">{{ 'msi_main_title'  | t }}</h1>
+      <div class="og-subtitle">{{ 'msi_sub_title'  | t }}</div>
+    </section>
+
+    {% if (orders | select(status='SEND_NOW')).length %}
+      {% include 'order-processing' %}
+    {% endif %}
+    <div id="unsent-orders-count" style="display:none;" orders-count= {{(orders | select(status='UNSENT')).length}}></div>
+    
+    {% if (orders | select(status='UNSENT')).length %}
+      {% include 'upcoming-orders' %}
+    {% endif %}
+
+    {% if ((orders | select(status='SEND_NOW')).length == 0) and (orders | select(status='UNSENT')).length == 0 %}
+        <div class="og-message-main" id="og-no-shipment-message">
+          <p>{{ 'not_a_subscriber' | t }}</p>
+          <a href="/make-it-a-routine.html" class="og-button og-default og-nsv">{{ 'shop_now_button_text' | t }}</a>
+        </div>
+    {% endif %}
+    
+    {% if (subscriptions | reject('live')).length %}
+      {% include 'inactive-subscriptions' %}
+    {% endif %}
+
+  {% else %}
+    {# The markup within this else block is shown if the customer is either not logged in or has neither an order nor a subscription#}
+    <section class="og-message-main" id="og-no-shipment-message">
+      <p>{{ 'not_a_subscriber' | t }}</p>
+      <a href="/make-it-a-routine.html" class="og-button og-default og-nsv">{{ 'learn_more' | t }}</a>
+    </section>
+  {% endif %}
+
+  <div id="inactive_order_counter" style="display:none;" orders-count= {{inactive_order_counter}}></div>
+  <div id="inactive_pro_order_counter" style="display:none;" orders-count= {{inactive_pro_order_counter}}></div>
+    <div id="inactive_health_order_counter" style="display:none;" orders-count= {{inactive_health_order_counter}}></div>
+  <div class = "og-cancel-subscription-success-modal">
+    {% include 'cancel/cancel-subscription-success' %}
+  </div>
+  {% include 'notifications' %}
+</div>
+{# The following line is needed to fire the "og:smi:ready" event after the DOM content of the page is fully loaded #}
+<div class="d-none">{{ 'document.dispatchEvent(new CustomEvent("og:smi:ready"))' | js }}</div>
+{# /og-container #}

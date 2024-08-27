@@ -1,0 +1,506 @@
+.og-order-item-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'og-order-item-info'
+    'center-options ';
+  gap: @size-4;
+  padding-top: @size-10;
+
+  &[data-item-type='one_time'] {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'og-order-item-info og-order-item-info'
+      'center-options buttons';
+  }
+
+  @media (min-width: @mobile-width) {
+    grid-template-columns: 3fr 3fr 4fr;
+    grid-template-areas: 'og-order-item-info center-options buttons';
+
+    &[data-item-type='one_time'] {
+      grid-template-columns: 3fr 3fr 4fr;
+      grid-template-areas: 'og-order-item-info center-options buttons';
+    }
+  }
+}
+
+.og-order-item-info {
+  grid-area: og-order-item-info;
+  grid-column: 1 / -1;
+
+  @media (min-width: @mobile-width) {
+    grid-column: auto;
+  }
+}
+
+.og-order-item {
+  position: relative;
+}
+
+.og-frequency-display {
+  grid-area: center-options;
+  font-size: @text-xs;
+  color: @color-secondary;
+  display: flex;
+  gap: @size-8;
+  padding: @size-2;
+  justify-content: center;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+
+  @media (min-width: @mobile-width) {
+    font-size: @text-sm;
+    align-self: center;
+    padding: 0;
+    margin-bottom: 0;
+    justify-content: flex-start;
+  }
+}
+
+.og-price {
+  font-size: @text-xs;
+
+  @media (min-width: @mobile-width) {
+    font-size: @text-base;
+  }
+}
+
+.og-original-price {
+  font-weight: 400;
+  color: @color-secondary;
+}
+
+.og-final-price {
+  font-weight: 500;
+}
+
+.og-item-description-text {
+  font-size: @text-xs;
+  font-style: italic;
+
+  @media (min-width: @mobile-width) {
+    font-size: @text-sm;
+  }
+}
+
+.og-item-overlay {
+  display: flex;
+  position: relative;
+  left: calc(-1 * @size-3-5);
+  top: @size-9;
+  isolation: isolate;
+}
+
+.og-item-badge {
+  font-size: @text-xxs;
+  font-weight: 700;
+  color: @color-badge-text;
+  padding: @size-1 @size-4;
+  border-radius: 4px;
+  word-break: break-word;
+
+  &.og-badge-pay-as-you-go {
+    background-color: @color-pay-as-you-go;
+  }
+  &.og-badge-prepaid {
+    background-color: @color-prepaid;
+  }
+  &.og-badge-one-time {
+    background-color: @color-one-time;
+  }
+}
+
+.og-item-badge-hook {
+  position: absolute;
+  left: 0;
+  top: calc(100% - @size-4);
+  z-index: -1;
+  pointer-events: none;
+
+  &.og-badge-pay-as-you-go {
+    fill: darken(@color-pay-as-you-go, 20%);
+  }
+
+  &.og-badge-prepaid {
+    fill: darken(@color-prepaid, 20%);
+  }
+
+  &.og-badge-one-time {
+    fill: darken(@color-one-time, 20%);
+  }
+}
+
+.og-order-item-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (min-width: @mobile-width) {
+    justify-content: flex-end;
+  }
+}
+
+.og-prepaid-controls {
+  font-size: @size-3-5;
+  font-weight: 500;
+}
+
+.og-prepaid-received:after {
+  content: '•';
+  margin: 0 @size-1;
+  color: @color-secondary;
+}
+
+.og-prepaid-remaining {
+  font-weight: 500;
+}
+
+.og-prepaid-summary {
+  color: @color-secondary;
+}
+
+.og-renew-prepaid {
+  margin-top: @size-1;
+  display: flex;
+  gap: @size-2;
+  align-items: center;
+
+  input[type='checkbox'] {
+    accent-color: @color-primary;
+    transform: scale(1.2);
+  }
+}
+
+.og-upsell {
+  padding: @product-padding;
+  border-top: none;
+  border-bottom: @border-width @border-style @border-color;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.og-upsell {
+  height: 238.8px;
+  display: flex;
+  flex-direction: column !important;
+  color: #000;
+  padding: 47px 30px;
+  background: url(https://storage.googleapis.com/ordergroove-static-assets/gnc/1573532_Oct22_Routines_Web_982x211.jpg) no-repeat;
+  background-size: cover;
+  border: none;
+  align-items: flex-start;
+  margin-left: -24px;
+  position: absolute;
+
+  @media screen and (max-width: 767px) {
+    background: #65BDB1;
+    height: 188.8px;
+  }
+
+  .og-product-info {
+    margin-bottom: 20px;
+    flex: none;
+
+    .og-upsell-header {
+      font-weight: bold;
+      font-family: proxima-nova, Arial, sans-serif;
+      font-size: 2rem;
+      margin: .25em 0;
+    }
+
+    .og-upsell-text {
+      font-family: proxima-nova, Arial, sans-serif;
+      font-size: 1rem;
+      font-weight: normal;
+      margin: 0;
+    }
+  }
+
+  .og-item-controls-container {
+    justify-content: flex-start;
+    background: #000;
+
+    :hover {
+      background: #db0400;
+    }
+
+    a {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      font-family: proxima-nova, Arial, sans-serif;
+      color: #fff;
+      text-transform: uppercase;
+      padding: 0 25px;
+      font-weight: bold;
+      height: 40px;
+    }
+  }
+}
+
+.og-order-items.og-shipment-body {
+    padding: 0;
+    border-top: 0;
+    gap: 0;
+    
+    .og-shipment-info {
+        display: none;
+    }
+}
+
+.og-order-items.og-shipment-body > .og-product:not(:last-child) {
+  border-bottom: 1px solid #e9edf7;
+}
+
+.og-product {
+    display: flex;
+    width: 100%;
+    flex-flow: wrap;
+    padding-top: 36px;
+    padding-bottom: 36px;
+
+    .og-product-row {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+    }
+    
+    .og-product-image-container {
+            width: 75px;
+            @media screen and (max-width: 1024px) {
+                width: 80px;
+            }
+        .og-product-image {
+            width: 75px;
+            height: 75px;
+            @media screen and (max-width: 1024px) {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    }
+    .og-name-price-controls-container {
+        width: 100%;
+        padding-left: 24px;
+        min-width: 50%;
+        
+        .og-description-and-controls {
+            display: flex;
+            width: 100%;
+            gap: 48px;
+            @media screen and (max-width: 1024px) {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .og-product-description {
+                width: 40%;
+                max-width: 351px;
+                @media screen and (max-width: 1024px) {
+                    width: 100%;
+                    max-width: 100%;
+                }
+                
+                &.pro-access-description {
+                  width: 100%;
+                  max-width: 100%;
+                }
+
+                .og-product-brand {
+                    color: #636466 !important;
+                    font-size: 10px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: 16px; /* 160% */
+                    text-transform: uppercase;
+                }
+                
+                .og-product-name > a, 
+                .og-product-display-name > a {
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 20px;
+                    margin-bottom: 12px;
+                    @media screen and (max-width: 1024px) {
+                        font-size: 14px;
+                        line-height: 18px;
+                    }
+                    
+                    &:hover {
+                       font-weight: 600; 
+                    }
+                }
+                
+                .og-price {
+                    .og-base-unit-price {
+                        color: #E60D2E;
+                        font-size: 18px;
+                        font-style: normal;
+                        font-weight: 700;
+                        line-height: 18px;
+                        margin-right: 4px;
+                    }
+                    
+                    .og-final-unit-price {
+                        color: #636466;
+                        font-size: 14px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 14px;
+                        text-decoration-line: line-through;
+                    }
+                }
+            }
+            
+            .og-item-controls {
+                width: 60%;
+                @media screen and (max-width: 1024px) {
+                    width: 100%;
+                    max-width: 100%;
+                }
+                
+                .og-freq-quantity-controls {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    gap: 24px;
+                    @media screen and (max-width: 1024px) {
+                        gap: 20px;
+                        justify-content: flex-start;
+                    }
+                    @media screen and (max-width: 767px) {
+                        gap: 12px;
+                        flex-direction: column;
+                    }
+                }
+                
+                .og-quantity, .og-freq {
+                    width: 286px;
+                    display: flex;
+                    flex-direction: column;
+                    margin-left: 0;
+                    @media screen and (max-width: 1024px) {
+                        width: 150px;
+                    }
+                    @media screen and (max-width: 767px) {
+                        width: 100%;
+                        max-width: 214px;
+                    }
+                    
+                    span {
+                        font-size: 12px;
+                        font-family: proxima-nova, Arial, sans-serif;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 12px;
+                    }
+                    
+                    select {
+                        width: 100%;
+                        margin-left: 0;
+                        border-radius: 2px;
+                        border: 1px solid #1a1a1a;
+                        margin-top: 4px;
+                    }
+                }
+            }
+        }
+        
+        .og-item-remove-actions {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            @media screen and (max-width: 1024px) {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+                .og-remove-item-separator {
+                    display: none;
+                }
+            }
+        }
+        
+        .og-product-name {
+            min-height: fit-content;
+            height: fit-content;
+            display: flex;
+        }
+    }
+
+    .signature-required-warning {
+      display: flex;
+      align-items: flex-start;
+      line-height: 17px;
+      gap: 4px;
+
+      @media screen and (max-width: 1024px) {
+        margin-top: 24px;
+      }
+
+      .signature-required-warning-message {
+        max-width: 432px;
+      }
+    }
+}
+
+.og-shipment-footer {
+    margin: 0 0 24px 0;
+    border-top: 1px solid;
+    padding-top: 24px;
+    
+    &.og-with-banner {
+        border-top: 0; 
+        margin-top: 238.8px;
+        @media screen and (max-width: 767px) {
+            margin-top: 188.8px;
+        }
+    }
+}
+
+.og-content-wrapper.og-unsent-shipment[data-pro-product="true"] {
+    .og-shipment-body {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        @media screen and (max-width: 1024px) {
+            flex-direction: column;
+            align-items: flex-start;
+            
+            .og-pro-subscription {
+                padding-bottom: 12px;
+            }
+            
+            .pro-confirm-cancel {
+                margin-left: 99px;
+            }
+        }
+    }
+}
+
+.og-health-subscription, 
+.og-pro-subscription {
+    border-bottom: 0px !important;
+    .og-final-unit-price {
+        color: #1A1A1A !important;
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        line-height: 18px !important;
+        text-align: left !important;
+        text-decoration-line: none !important;
+    }
+    
+    .pro-access-description {
+        .og-product-health {
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 23px;
+            text-align: left;
+        }
+    }
+}
+

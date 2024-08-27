@@ -1,0 +1,80 @@
+/*================ General Button ================*/
+
+.og-button {
+    font-family: proxima-nova, Arial, sans-serif;
+    background: none;
+    border: none;
+    color: #000;
+    border-radius: 0;
+    text-transform: uppercase;
+    padding: 0;
+    font-weight: 600;
+    font-size: 14px;
+    height: auto;
+    line-height: normal;
+
+    &.og-link {
+        text-transform: none;
+        font-weight: 400;
+    }
+    
+    &.og-primary {
+        background: #1a1a1a;
+        display: flex;
+        padding: 16px 32px;
+        justify-content: center;
+        align-items: flex-start;
+        align-self: stretch;
+        color: #fff;
+        text-align: center;
+        font-feature-settings: 'liga' off;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 14px; /* 100% */
+        text-transform: uppercase;
+        border: 1px solid #1a1a1a;
+    }
+    
+    &.og-secondary {
+        display: flex;
+        padding: 16px 32px;
+        justify-content: center;
+        align-items: flex-start;
+        align-self: stretch;
+        border: 1px solid #1a1a1a;
+        background: #fff;
+        color: #1a1a1a;
+        text-align: center;
+        font-feature-settings: 'liga' off;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 14px;
+        text-transform: uppercase;
+    }
+    
+    &:not(.og-disabled):hover {
+        transform: none !important;
+        text-decoration: underline !important;
+        font-weight: 900;
+        box-shadow: none !important;
+    }
+    
+    &[disabled],
+    &.og-disabled {
+        opacity: .5;
+        cursor: not-allowed;
+        &.og-secondary {
+            background: #E0E0E0;
+            border: 1px solid #E0E0E0;
+        }
+        
+        &:hover {
+            cursor: not-allowed !important;
+        }
+    }
+    &.og-nsv {
+        text-decoration: none;
+    }
+}

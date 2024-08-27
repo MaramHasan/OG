@@ -1,0 +1,256 @@
+.og-order-header {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  gap: @size-3-5;
+  padding: @size-5;
+  position: relative;
+
+  h3 {
+    color: @color-secondary;
+    font-size: @size-4;
+    font-weight: 400;
+
+    @media (min-width: @mobile-width) {
+      margin-bottom: @size-1;
+      font-size: @size-4-5;
+    }
+  }
+
+  .og-order-date {
+    font-size: @size-4-5;
+    display: flex;
+    align-items: center;
+    padding: 0;
+
+    svg {
+      margin-left: @size-2;
+    }
+
+    @media (min-width: @mobile-width) {
+      font-size: @size-5;
+    }
+  }
+
+  .og-order-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: @size-3;
+  }
+
+  @media (min-width: @mobile-width) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .og-order-toggle-trigger {
+    @media (max-width: @mobile-width) {
+      position: absolute;
+      top: @size-3-5;
+      right: @size-5;
+
+      --og-button-padding: @size-0-5 @size-1-5;
+      --og-button-border-radius: @size-1;
+    }
+  }
+
+  // highlight which order is being modified
+  &:has(dialog[open]) {
+    background-color: @color-order-highlight;
+  }
+}
+
+.og-order-product-summary {
+  display: flex;
+
+  > * {
+    margin: 0;
+    border: 1px solid #ececec;
+
+    // reverse stacking order so the first item is on top
+    &:nth-child(1) {
+      z-index: 3;
+    }
+
+    &:nth-child(2) {
+      z-index: 2;
+    }
+
+    &:nth-child(3) {
+      z-index: 1;
+    }
+
+    &:not(:first-child) {
+      margin-left: calc(-1 * @size-10);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: margin 200ms;
+    }
+  }
+
+  @media (min-width: 950px) {
+    // if the screen is too small, increasing the margin on hover will cause an infinite loop since the content will attempt wrap to the next line
+    &:hover > *:not(:first-child) {
+      margin-left: @size-1;
+    }
+  }
+}
+
+.og-order-header-summary {
+  display: flex;
+  align-items: center;
+  gap: @size-3;
+  opacity: 1;
+  transition: opacity 400ms;
+
+  // this should be last in the flex container on mobile
+  order: 1;
+
+  @media (min-width: @mobile-width) {
+    margin-left: auto;
+    order: 0;
+  }
+}
+
+.og-order-toggle[data-open] {
+  .og-order-header-summary {
+    display: none;
+    opacity: 0;
+  }
+}
+
+.og-shipment-header-controls-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    min-height: 47.6px;
+    &.og-without-controls {
+        justify-content: flex-end;
+    }
+    
+    .og-shipment-header-controls {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        width: fit-content;
+    }
+}
+
+.og-order-status {
+    border-top: 1px solid #e9edf7;
+    margin-top: 24px;
+    padding-top: 24px;
+}
+
+.og-shipment-header-controls.mobile-only {
+    display: none;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid #e9edf7;
+    margin-top: 24px;
+    @media screen and (max-width: 1024px) {
+        display: flex;
+    }
+    @media screen and (max-width: 767px) {
+        flex-direction: column;
+    }
+    .og-send-shipment-now-button,
+    .og-change-shipment-date-button {
+        width: 50%;
+        @media screen and (max-width: 767px) {
+            width: 100%;
+        }
+        .og-button-send-now, 
+        .og-button-skip-button {
+            width: 100%;
+        }
+    }
+}
+
+.og-sent-shipment {
+    margin-bottom: 24px;
+    .og-title {
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 28px;
+        text-align: left;
+    }
+    
+    .og-order-product-images {
+        flex-direction: row !important;
+    }
+    
+    .og-shipment-header-controls {
+        flex-direction: row-reverse;
+    }
+    
+    .og-sent-shipment-help {
+        width: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        &.og-mobile {
+            display: none;
+        }
+        h3 {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 28px;
+            text-align: left;
+        }
+        
+        div {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 28px;
+            text-align: left;
+        }
+
+        @media screen and (max-width: 1024px) {
+            &.og-mobile {
+                display: flex;
+                width: 100%;
+                padding-top: 24px;
+                margin-bottom: 24px;
+                border-top: 1px solid #e9edf7;
+            }
+            &.og-desktop {
+                display: none;
+            }
+            h3 {
+                font-size: 16px;
+                line-height: 26px;
+            }
+            div {
+                font-size: 16px;
+                line-height: 26px;
+            }
+        }
+    }
+    
+    .og-name-price-controls-container {
+        width: 50% !important;
+        .og-product-description {
+            width: 100% !important;
+        }
+    }
+    
+    .og-order-items.og-shipment-body {
+        .og-product {
+            border-top: 1px solid #e9edf7;
+            border-bottom: 0 !important;
+        }
+        
+        & > .og-product:first-child {
+            border-top: 0;
+        }
+    }
+}

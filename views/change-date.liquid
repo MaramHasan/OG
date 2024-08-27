@@ -1,0 +1,72 @@
+{% set current_order_items = order_items | select(order=order.public_id) %}
+{% set blockActions = false %}
+{% set health_subscription = false %}
+{% for order_item in current_order_items %}
+  {% set product = products | find(id=order_item.product) %}
+  {% set subscription = subscriptions | find(id=order_item.subscription) %}
+  {% set blockActions = blockActions or (subscription and subscription.extra_data and subscription.extra_data.pro_membership) %}
+    {% if subscription and subscription.extra_data and subscription.extra_data.health_membership %}
+      {% set health_subscription = true %}
+    {% endif%}
+{% endfor%} 
+
+<div class="og-change-shipment-date-button">
+  {% if blockActions or health_subscription == true %}
+      <button disabled class="og-button og-button-skip-button og-disabled og-secondary">{{ 'shipment_skip_button' | t }}</button>
+  {% elseif 'Date.parse(order.place) - 3 * 86400 * 1000 > new Date().getTime()' | js %}
+    <button
+      class="og-button og-button-skip-button og-secondary"
+      data-size="lg"
+      @click="{{ '() => SMDialog.open("og-skip-order-dialog-" + order.public_id)' | js }}"
+    >
+      {{ 'shipment_skip_button' | t }}
+    </button>
+  {% else %}
+   <button disabled class="og-button og-button-skip-button og-disabled og-secondary">{{ 'shipment_skip_button' | t }}</button>
+  {% endif %}
+
+  <sm-dialog id="og-skip-order-dialog-{{ order.public_id }}">
+    <dialog>
+      <form
+        action="{{ 'change_shipment_date' | action }}"
+        @success="{{ 'SMDialog.close' | js }}"
+        @reset="{{ 'SMDialog.close' | js }}"
+      >
+        {% set dialog_header_text = 'modal_skip_header' | t %}
+        {% include 'dialog-header' %}
+        
+        <div class="og-dialog-body">
+          <div class="og-dialog-label">I WANT TO</div>
+          <div class="og-input-group">
+              <input class="og-check-radio og-change-date-radio" checked type="radio" value="change_shipment_date" name="change_or_skip" @click={{ 'changeSubmitButtonText' | js }} id="change_date_{{ order.public_id }}" />
+              <label class="og-check-radio-label" for="change_date_{{ order.public_id }}">Change My Delivery Date</label>
+          </div>
+          <div class="og-input-group og-skip-shipment-group">
+              <input class="og-check-radio og-skip-shipment-radio" type="radio" value="skip_shipment" name="change_or_skip" @click={{ 'changeSubmitButtonText' | js }} id="skip_shipment_{{ order.public_id }}" />
+              <label class="og-check-radio-label" for="skip_shipment_{{ order.public_id }}"><span>Skip this shipment</span></label>
+              <div class="og-skip-shipment-text">
+                  Do you want to skip this shipment? Your next shipment will be scheduled according to your subscription preferences.
+              </div>
+              <div class="og-change-date-picker">
+                  <input type="date" name="shipment_date" max="{{ 'maxDate' | js }}" min="{{ 'minDate' | js }}" value="{{ order.place }}" @change = {{ 'changeDateHandler' | js }} />
+                  <div id="change-date-message" class="change-date-message" style="display: none">
+                      <span class="icon-wrpper">
+                          <img src="https://storage.googleapis.com/ordergroove-static-assets/gnc/gnc_blue.png" >
+                      </span>
+                      {{ 'change_date_warning' | t }}
+                  </div>
+              </div>
+          </div>
+          <input type="hidden" name="order" value="{{ order.public_id }}"/>
+        </div>{# /og-dialog-body #}
+
+        <div class="og-dialog-footer">
+          <div class="og-button-wrapper">
+            <button class="og-button og-change-date-skip-button  og-primary" type="submit" @click={{ 'getFormAction' | js }}>{{ 'modal_change_date_save' | t }}</button>
+          </div>
+          <button class="og-button og-cancel" type="reset">{{ 'cancel_button' | t }}</button>
+        </div>
+      </form>
+    </dialog>
+  </sm-dialog>
+</div>

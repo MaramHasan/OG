@@ -1,0 +1,73 @@
+{% set product = products | find(id=subscription.product) %}
+{% set block = (subscription.extra_data.hidden or subscription.extra_data.hide or subscription.extra_data.pro_membership) %}
+{% set disableButtonClass = '' %}
+{% if not product.autoship_enabled %}
+    {% set disableButtonClass = 'disable-subscription' %}
+{% endif %}
+
+<div class="og-reactivate-subscription-button">
+  {% if product.autoship_enabled and not block %}
+    {% if subscription and subscription.extra_data and subscription.extra_data.health_membership %}
+        <button
+          class="og-button og-secondary"
+          type="button"
+          disabled
+        >
+          {{ 'subscription_reactivate_button' | t }}
+        </button>
+    {% else %}
+        <button
+          class="og-button og-secondary"
+          type="button"
+          @click="{{ '() => SMDialog.open("og-reactivate-dialog-" + subscription.public_id)' | js }}"
+        >
+          {{ 'subscription_reactivate_button' | t }}
+        </button>
+    {% endif %}
+  {% else %}
+    {% if not product.autoship_enabled %}
+          <button
+          class="og-button og-secondary"
+          type="button"
+          @click="{{ '() => SMDialog.open("og-reactivate-dialog-" + subscription.public_id)' | js }}" 
+          disabled
+        >
+          {{ 'subscription_reactivate_button' | t }}
+        </button>
+      {% else %}
+          <a class="og-button" href="/600762.html">{{ 'subscription_reactivate_button' | t }}</a>
+      {% endif %}
+  {% endif %}
+
+  <sm-dialog id="og-reactivate-dialog-{{ subscription.public_id }}">   
+    <dialog aria-hidden="true">
+      <form 
+        action="{{ 'reactivate_subscription' | action }}"  
+        name="og_subscription_reactivate"
+        @success="{{ 'SMDialog.close' | js }}"
+        @reset="{{ 'SMDialog.close' | js }}"
+      >
+        {% set dialog_header_text = 'modal_subscription_reactivate_header' | t %}
+        {% include 'dialog-header' %}
+
+        <div class="og-dialog-body">
+          {{ 'modal_subscription_reactivate_body' | t }}
+        </div>{# /og-dialog-body #}
+
+        <div class="og-dialog-footer">
+            
+          <input type="hidden" name="subscription" value="{{ subscription.public_id }}"/>
+          <input type="hidden" name="every" value="{{ subscription.every }}"/>
+          <input type="hidden" name="every_period" value="{{ subscription.every_period }}"/>
+          <div class="og-button-wrapper">
+              <button name="reactivate_subscription" type="submit" class="og-button og-emphasis-button og-primary">
+                {{ 'modal_reactivate_save' | t }}
+              </button>
+          </div>
+          <button class="og-button og-cancel og-secondary" type="reset">EXIT WITHOUT CHANGES</button>
+        </div>{# /og-dialog-footer #}
+
+      </form>
+    </dialog>
+  </sm-dialog>
+</div>{# /og-reactivate-subscription-button #}

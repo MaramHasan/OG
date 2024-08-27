@@ -1,0 +1,163 @@
+.og-sku-swap-product-change {
+  input:checked + label {
+    border-color: @color-primary;
+  }
+
+  input:focus-visible + label {
+    outline: 1.5px solid lighten(@color-primary, 10%);
+    outline-offset: 4px;
+  }
+
+  label {
+    align-items: center;
+    cursor: pointer;
+    padding: @size-2;
+    border: 1.5px solid @color-border;
+    border-radius: @border-radius-sm;
+
+    div {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.og-sku-swap-display {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  align-content: start;
+  gap: @size-2;
+  margin: @size-4 0;
+  width: 100%;
+  overflow: auto;
+  max-height: 60vh;
+  position: relative;
+
+  @media (min-width: @mobile-width) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: @size-4;
+  }
+
+  .og-no-result-message {
+    display: none;
+    color: @color-secondary;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+  }
+}
+
+.og-sku-swap-search-wrapper {
+  position: relative;
+  margin-top: @size-4;
+
+  @wrapping-border-width: 1px;
+
+  input {
+    border: @wrapping-border-width solid @color-border;
+    border-radius: @border-radius-xs;
+    padding: @size-1 @size-3;
+    width: 100%;
+  }
+
+  .og-sku-swap-search-icons {
+    position: absolute;
+    // place it inside the wrapping input's border
+    right: @wrapping-border-width;
+    top: @wrapping-border-width;
+    height: calc(100% - @wrapping-border-width * 2);
+
+    display: flex;
+    width: fit-content;
+  }
+
+  .og-sku-swap-search-icon {
+    background-color: @color-neutral-background;
+    display: grid;
+    place-items: center;
+
+    width: @size-8;
+    border: @wrapping-border-width solid transparent;
+    border-radius: calc(@border-radius-xs - @wrapping-border-width);
+  }
+
+  button {
+    display: grid;
+    place-items: center;
+    align-self: center;
+  }
+
+  // hide the clear button when nothing is in the input
+  input:placeholder-shown + .og-sku-swap-search-icons button {
+    display: none;
+  }
+}
+
+  .og-change-product-control {
+    dialog {
+        max-width: 854px;
+        padding: 5em 2em 5em;
+        width: 90%;
+        max-height: 95vh;
+        overflow: auto;
+        .og-dialog-header {
+            justify-content: flex-start;
+            margin-bottom: 12px !important;
+        }
+        .og-dialog-title {
+            font-size: 36px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 34px;
+        }
+        
+        .og-dialog-close {
+              top: 24px;
+              right: 24px;
+              padding: 0;
+          }
+        
+        .og-sku-swap-display {
+            display: flex;
+            flex-direction: column;
+            max-height: fit-content;
+            padding: 5px;
+            margin-bottom: 40px;
+        }
+        
+        .og-sku-swap-display label {
+            border: 1px solid #ddd;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 4rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .og-sku-swap-display input:checked + label {
+            box-shadow: 0 0 5px #0d6efd;
+        }
+        .og-input-group {
+            width: 100%;
+        }
+        .og-product-name-price {
+            margin: auto;
+        }
+        .og-dialog-footer {
+            flex-direction: column;
+            .og-primary {
+                margin: auto;
+                max-width: 29em;
+                width: 100%;
+            }
+            .og-primary:hover {
+                background-color: red !important;
+                border: 1px solid red !important;
+            }
+        }
+        input[type=radio]:checked+label:before {
+            background-color: #000;
+        }
+    }
+}

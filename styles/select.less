@@ -1,0 +1,40 @@
+.og-select-wrapper {
+  position: relative;
+  display: block;
+  max-width: fit-content;
+
+  select {
+    border: none;
+    appearance: none;
+    background: none;
+    font-size: @text-xl;
+    padding-left: @size-1;
+    // make room for the custom dropdown icon
+    padding-right: @size-9;
+    border-radius: @border-radius-sm;
+
+    &:focus-visible {
+      outline: 2px solid @color-select-focus-outline;
+    }
+  }
+
+  option {
+    font-size: @text-base;
+  }
+
+  &:after {
+    font-size: @text-xs;
+    color: @color-highlight;
+    background-color: @color-button-secondary-bg;
+    padding: 0 @size-1;
+    border-radius: @border-radius-xs;
+    content: @chevron-down-sm;
+
+    pointer-events: none;
+    position: absolute;
+    right: @size-2-5;
+    // vertically center
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

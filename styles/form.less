@@ -1,0 +1,144 @@
+/*================ Form Groups ================*/
+
+// used in Cancel Subscription | SKU Swap | Change Shipment Address
+.og-input-group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 10px 0;
+
+  .og-check-radio {
+    flex-shrink: 0;
+  }
+
+  .og-check-radio-label {
+    &:before {
+      min-width: 1rem;
+      min-height: 1rem;
+    }
+    margin-left: 10px;
+  }
+}
+
+.og-form-group {
+  margin-bottom: 1em;
+}
+
+.og-form-label {
+  margin-bottom: 0.5rem;
+
+  &.og-required:after {
+    content: "*";
+    color: @form-error-color;
+  }
+}
+
+input:invalid {
+  border-color: red;
+}
+
+/*================ Form Inputs ================*/
+
+// i.e Inputs | Textarea
+.og-form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: @form-input-control-font-size;
+  font-weight: @form-input-control-font-weight;
+  line-height: @form-input-control-line-height;
+  color: @form-input-control-color;
+  background-color: @form-input-control-background;
+  background-clip: padding-box;
+  border: @form-input-control-border;
+  border-radius: @form-input-control-border-radius;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+// i.e Select
+.og-form-select {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+  font-size: @form-input-control-font-size;
+  font-weight: @form-input-control-font-weight;
+  line-height: @form-input-control-line-height;
+  color: @form-input-control-color;
+  background-color: @form-input-control-background;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  border: @form-input-control-border;
+  border-radius: @form-input-control-border-radius;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+// i.e Radio Lists -- used in SKU Swap
+.og-radio-button-list .og-input-group {
+  input {
+    display: none;
+
+    &:checked + label {
+      box-shadow: 0 0 5px @form-radio-group-checked-color;
+    }
+  }
+
+  label {
+    border: @border-width @border-style @border-color;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem 4rem;
+    width: 100%;
+
+    img {
+      margin: 0 8px 0 0;
+      width: @form-sku-swap-image-width;
+    }
+
+    &:hover {
+      cursor: pointer;
+      box-shadow: 0 0 5px @form-radio-group-hover-color;
+      opacity: 0.875;
+    }
+  }
+}
+
+// i.e Change Quantity and Frequency Inputs
+.og-freq-quantity-controls {
+  margin-bottom: 18px;
+
+  & > div,
+  & > form {
+    display: inline-block;
+
+    input,
+    select {
+      width: auto;
+      height: 38px;
+      padding: 0 30px 0 15px;
+      margin-left: 4px;
+      border-color: #aaa;
+      font-family: proxima-nova, Arial, sans-serif;
+      background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTBweCIgaGVpZ2h0PSI2cHgiIHZpZXdCb3g9IjAgMCAxMCA2IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IHNrZXRjaHRvb2wgNDEuMiAoMzUzOTcpIC0gaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoIC0tPgogICAgPHRpdGxlPjk2NjdGOTY0LUUwQkItNDAzMy1CM0E2LTIwMzMwMkY3NzFFMzwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggc2tldGNodG9vbC48L2Rlc2M+CiAgICA8ZGVmcz48L2RlZnM+CiAgICA8ZyBpZD0iU3ltYm9scyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9IkZvcm1zLS8tRmllbGQtLy1Ecm9wZG93biIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI3NS4wMDAwMDAsIC00MS4wMDAwMDApIiBmaWxsPSIjNjc2OTZEIj4KICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlRyaWFuZ2xlIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyODAuMDAwMDAwLCA0NC4wMDAwMDApIHNjYWxlKDEsIC0xKSB0cmFuc2xhdGUoLTI4MC4wMDAwMDAsIC00NC4wMDAwMDApICIgcG9pbnRzPSIyODAgNDEgMjg1IDQ3IDI3NSA0NyI+PC9wb2x5Z29uPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+)
+        no-repeat 93%;
+    }
+  }
+
+  .og-freq {
+    margin-left: 1em;
+
+    form {
+      display: inline;
+    }
+  }
+
+  .og-disabled {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+  }
+}

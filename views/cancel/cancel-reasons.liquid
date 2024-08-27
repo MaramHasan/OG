@@ -1,0 +1,38 @@
+<div class="og-cancel-reasons">
+  {% set cancel_reasons = 'cancel_reasons' | t %}
+  {% for reason in cancel_reasons | entries | shuffle %}
+    {% set code = reason | first %}
+    {% set text = reason | last %}
+
+    {% if code != '1' %}
+      <div>
+        <input
+          required
+          type="radio"
+          name="cancel_reason"
+          value="{{ code }} | {{ text }}"
+          id="cancel_reason_{{ code }}_{{ subscription.public_id }}"
+        >
+        <label for="cancel_reason_{{ code }}_{{ subscription.public_id }}">
+          {{ text }}
+        </label>
+      </div>
+    {% endif %}
+  {% endfor %}
+
+  {% set other_reason = cancel_reasons | get('1') %}
+  {% if other_reason %}
+    <div>
+      <input required type="radio" name="cancel_reason" value="1" id="cancel_reason_1_{{ subscription.public_id }}">
+      <label for="cancel_reason_1_{{ subscription.public_id }}">{{ other_reason }}</label>
+      <input
+        onfocus='this.form.querySelector("input[value=\\"1\\"]").click()'
+        type="text"
+        class="og-cancel-reason-other"
+        name="cancel_reason_details"
+        placeholder="{{ 'modal_cancel_reason_label' | t }}"
+        aria-label="{{ 'modal_cancel_reason_label' | t }}"
+      >
+    </div>
+  {% endif %}
+</div>

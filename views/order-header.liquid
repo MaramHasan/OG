@@ -1,0 +1,111 @@
+<div>
+  <div class="shipment-header-product-wrapper">
+    <div class="og-shipment-header" data-shipment-id="{{ order.public_id }}">
+        {% if pro_subscription %} 
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+              <path d="M12.934 1.25L15.6901 9.73958H24.6137L17.3958 14.9826L20.1519 23.4722L12.934 18.2248L5.71181 23.4722L8.46788 14.9826L1.25 9.73958H10.1736L12.934 1.25Z" fill="#1A1A1A"/>
+            </svg>
+        {% elseif health_subscription %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                <path d="M5 5H20C20.6914 5 21.25 5.55859 21.25 6.25V16.25H22.5V6.25C22.5 4.87109 21.3789 3.75 20 3.75H5C3.62109 3.75 2.5 4.87109 2.5 6.25V16.25H3.75V6.25C3.75 5.55859 4.30859 5 5 5ZM1.32422 18.75H23.6758C23.4609 19.4727 22.793 20 22 20H3C2.20703 20 1.53906 19.4727 1.32422 18.75ZM0.75 17.5C0.335938 17.5 0 17.8359 0 18.25C0 19.9062 1.34375 21.25 3 21.25H22C23.6562 21.25 25 19.9062 25 18.25C25 17.8359 24.6641 17.5 24.25 17.5H0.75ZM11.875 6.875C11.1836 6.875 10.625 7.43359 10.625 8.125V9.375H9.375C8.68359 9.375 8.125 9.93359 8.125 10.625V11.875C8.125 12.5664 8.68359 13.125 9.375 13.125H10.625V14.375C10.625 15.0664 11.1836 15.625 11.875 15.625H13.125C13.8164 15.625 14.375 15.0664 14.375 14.375V13.125H15.625C16.3164 13.125 16.875 12.5664 16.875 11.875V10.625C16.875 9.93359 16.3164 9.375 15.625 9.375H14.375V8.125C14.375 7.43359 13.8164 6.875 13.125 6.875H11.875ZM11.875 8.125H13.125V10C13.125 10.3438 13.4062 10.625 13.75 10.625H15.625V11.875H13.75C13.4062 11.875 13.125 12.1562 13.125 12.5V14.375H11.875V12.5C11.875 12.1562 11.5938 11.875 11.25 11.875H9.375V10.625H11.25C11.4141 10.625 11.5742 10.5586 11.6914 10.4414C11.8086 10.3242 11.875 10.1641 11.875 10V8.125Z" fill="#1A1A1A"/>
+            </svg>
+        {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                <path d="M17.9688 2.8125H12.9688V7.5H21.0693L19.3994 3.74023C19.1504 3.17383 18.5889 2.8125 17.9736 2.8125H17.9688ZM21.5625 9.0625H12.9688H11.4062H2.8125V20C2.8125 20.8643 3.51074 21.5625 4.375 21.5625H20C20.8643 21.5625 21.5625 20.8643 21.5625 20V9.0625ZM3.30566 7.5H11.4062V2.8125H6.40625C5.79102 2.8125 5.22949 3.17383 4.98047 3.74023L3.30566 7.5ZM17.9688 1.25C19.2041 1.25 20.3223 1.97754 20.8252 3.10547L22.8564 7.67578C23.0322 8.07617 23.125 8.50586 23.125 8.94531V20C23.125 21.7236 21.7236 23.125 20 23.125H4.375C2.65137 23.125 1.25 21.7236 1.25 20V8.94531C1.25 8.50586 1.34277 8.07617 1.51855 7.67578L3.5498 3.10547C4.05273 1.97754 5.1709 1.25 6.40625 1.25H17.9688Z" fill="#1A1A1A"/>
+            </svg>
+        {% endif %}
+      {% if pro_subscription %} 
+          <div class="og-shipment-header-label pro-access">PRO Access Membership</div>
+          <div class="og-shipment-info">
+            {% if pro_subscription %}
+                <span class="og-shipment-on">Renews</span>
+                {% set subscription_created_date_object = 'new Date(subscription.created)' | js %}
+                {% set subscription_created_date_month = 'new Date(subscription.created).getMonth() + 1' | js %}
+                {% set subscription_created_date_fullyear = 'new Date(subscription.created).getFullYear()' | js %}
+                {% set subscription_end_date = 'new Date(subscription_created_date_fullyear + 1, subscription_created_date_month , 0)' | js %}
+                {{ subscription_end_date | date }}
+            {% endif %}
+          </div>
+      {% elseif health_subscription %}
+          <div class="og-shipment-header-label health-subscription">
+            <span> GNC Health Membership</span> 
+          </div>
+        <div class="og-shipment-info"><span>Renews</span> <span class="og-shipment-date-header">{{ order.place | date }}</span></div>
+      {% else %}
+        {% if order_counter == 1 %}
+          <div class="og-shipment-header-label">
+              <span>Future Shipment <span class="og-shipment-date-header">{{ order.place | date }}</span></span>
+          </div>
+        {% else %}
+          <div class="og-shipment-header-label">
+              <span>Next Shipment <span class="og-shipment-date-header">{{ order.place | date }}</span></span>
+              </div>
+        {% endif %}
+      {% endif %}
+
+      {# Shipping info #}
+        {% if shipping_address and pro_subscription == false and health_subscription == false %}
+          <div class="og-shipping">
+            <div class="og-footer-header">
+              {{ 'shipment_address_indicator' | t }}
+            </div>
+            <div class="og-shipping-address-container" og-address-id="{{shipping_address.public_id}}">
+              <div class="og-address-line-1">{{ shipping_address.address }}</div>
+              <div class="og-address-line-2">{{ shipping_address.address2 }}</div>
+              <div class="og-address-city-state-zip">
+                {{ shipping_address.city }}, {{ shipping_address.state_province_code }}
+                {{ shipping_address.zip_postal_code }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {# Shipping info #}
+  </div>
+  {# product images #}
+  <div class="og-order-product-images">
+    {% for order_item in current_order_items %}
+      {% set product = products | find(id=order_item.product) %}
+      {% if product %}
+        <div class="og-thumbnail">
+          <a href="{{ product.detail_url | if_defined }}">
+            <img src="{{ product.image_url }}" alt="" onerror="this.style.display='none';" alt="{{ product.name }}">
+          </a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {# product images #}
+</div>
+
+{% set shipment_control_classes = '' %}
+{% if pro_subscription == true or health_subscription == true %}
+    {% set shipment_control_classes = 'og-order-actions og-shipment-header-controls membership-control' %}
+{% else %}
+    {% set shipment_control_classes = 'og-order-actions og-shipment-header-controls' %}
+{% endif %}
+
+
+{# Shipment controls #}
+        <div class={{shipment_control_classes}}>
+            {% if pro_subscription == false and health_subscription == false %}
+                <div class="controls-wrapper">
+                  {% include 'send-now' %} 		
+                  {% include 'change-date' %}
+                </div>
+             {% endif %}
+            {# toggle button #}
+            <button
+              data-toggle-trigger
+              class="og-button og-order-toggle-trigger"
+              data-variant="secondary"
+              aria-label="{{ 'a11y_order_details_toggle' | t }}"
+            >
+              {% if pro_subscription or health_subscription %}
+                MANAGE MEMBERSHIP
+              {% else %}
+                MANAGE ROUTINE
+              {% endif %}
+            </button>
+            {# toggle button #}
+        </div>
+{# Shipment controls #}

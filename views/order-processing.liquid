@@ -1,0 +1,14 @@
+<section id="og-sent-shipments" aria-labelledby="shipments-sent-header">
+  {% if orders %}
+    {% for order in orders | select(status='SEND_NOW') | key %}
+      {# The markup within this if block is displayed for all sent orders #}
+      {% set current_order_items = order_items | select(order=order.public_id) %}
+      {% set payment = payments | find(id=order.payment) %}
+      {% set shipping_address = addresses | find(id=order.shipping_address) %}
+
+      {% include 'orders-process' %}
+
+    {% endfor %}
+     <div id="processing-orders-count" style="display:none;" orders-count= {{(orders | select(status='SEND_NOW')).length}}></div>
+  {% endif %}
+</section>

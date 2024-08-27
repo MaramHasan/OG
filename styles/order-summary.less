@@ -1,0 +1,296 @@
+.og-order-summary-container {
+  background: @color-button-secondary-bg;
+  padding: @size-6 @size-2;
+  color: @color-tertiary;
+  border-radius: 0 0 @border-radius-md @border-radius-md;
+
+  @media (min-width: @mobile-width) {
+    padding: @size-10;
+  }
+
+  h4 {
+    font-size: @text-sm;
+    @media (min-width: @mobile-width) {
+      font-size: @text-base;
+    }
+  }
+
+  .og-order-summary {
+    border: @color-border;
+    border-radius: @border-radius-md;
+    background: @container-background;
+    padding: @size-2 @size-3;
+
+    @media screen and (min-width: @mobile-width) {
+      padding: @size-2 @size-11;
+    }
+  }
+
+  sm-toggle {
+    padding: @size-3 @size-1;
+
+    @media screen and (min-width: @mobile-width) {
+      padding: @size-4 @size-2;
+    }
+
+    &[data-open] .og-hide-on-open {
+      display: none;
+    }
+  }
+
+  .og-summary {
+    display: flex;
+    align-items: center;
+  }
+
+  [data-toggle-trigger] {
+    margin-left: auto;
+  }
+
+  .og-summary-heading {
+    font-weight: 700;
+  }
+  .og-shipping,
+  .og-billing {
+    border-bottom: 1px solid @color-border;
+  }
+}
+
+.og-cost-breakdown {
+  margin: @size-2;
+  padding-bottom: @size-3;
+  border-bottom: 1px solid @color-border;
+  @media (min-width: @mobile-width) {
+    margin: @size-3;
+  }
+  dl {
+    div {
+      display: flex;
+      justify-content: space-between;
+    }
+    width: 100%;
+    font-size: @text-xs;
+    @media (min-width: @mobile-width) {
+      font-size: @text-base;
+    }
+  }
+}
+
+.og-total-card {
+  margin-top: @size-4;
+  max-width: 595px;
+  padding-top: @size-1;
+}
+
+.og-hide-on-open {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  // on really small screens, shrink this helper text a bit
+  @media (max-width: @mobile-width-sm) {
+    font-size: @text-xs;
+  }
+}
+
+.og-price-heading {
+  font-size: @text-sm;
+  @media (min-width: @mobile-width) {
+    font-size: @text-lg;
+  }
+}
+
+.og-hide-on-open:before {
+  content: '•';
+  margin: 0 @size-1;
+  @media (min-width: @mobile-width) {
+    margin: 0 @size-2;
+  }
+}
+
+.og-total {
+  font-weight: 700;
+  font-size: @text-base;
+
+  @media (min-width: @mobile-width) {
+    font-size: @text-lg;
+  }
+}
+
+.og-disclaimer {
+  font-size: @text-xxs;
+
+  @media (min-width: @mobile-width) {
+    font-size: @text-xs;
+  }
+}
+
+.og-total-display {
+  margin: @size-3 @size-3 0 0;
+}
+
+.og-shipment-footer {
+    .og-shipping, 
+    .og-billing, 
+    .og-total-table {
+        display: flex;
+        flex-direction: row;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #e7e6e6;
+        margin-bottom: 24px;
+        @media screen and (max-width: 1024px) {
+            flex-direction: column;
+        }
+        
+        .og-footer-header {
+            max-width: 200px;
+            width: 42%;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 24px;
+        }
+        
+        .og-shipping-address-container, 
+        .og-billing-details-container {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            width: 60%;
+            @media screen and (max-width: 1024px) {
+                width: 100%;
+            }
+        }
+        .og-address-city-state-zip,
+        .og-address-line-2,
+        .og-address-line-1,
+        .og-address-name, 
+        .og-payment-type, 
+        .og-payment-expiration-date, 
+        .og-exp-date {
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+        }
+        
+        .og-change-shipment-address-button > a ,
+        .og-edit-payment {
+            position: relative;
+            color: #1a1a1a;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 18px;
+            text-decoration-line:underline;
+            margin-top: 12px;
+            
+            &:hover {
+                font-weight: 600;
+            }
+        }
+        
+        table {
+            max-width: 80%;
+            @media screen and (max-width: 1024px) {
+                max-width: 100%;
+            }
+            .og-total-value, 
+            .og-total-label {
+                padding: 0;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 18px;
+                padding-bottom: 4px;
+            }
+            .og-total-value {
+                text-align: right;
+            }
+        } 
+    }
+}
+
+.og-total-table {
+    border-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+#og-inactive-pro-subscription, 
+#og-inactive-health-subscription {
+    .og-content-wrapper {
+        margin-top: 48px;
+    }
+    .og-product {
+        border-top: 1px solid #e9edf7;
+        margin-top: 24px;
+    }
+
+    .og-final-unit-price {
+        color: #1A1A1A !important;
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        line-height: 18px !important;
+        text-align: left !important;
+        text-decoration-line: none !important;
+        padding-top: 12px;
+        display: block;
+    }
+    
+    .og-product-name > a {
+        margin-bottom: 0;
+    }
+    
+    .og-product-health {
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 23px;
+        text-align: left;
+    }
+
+    .og-title {
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 28px;
+        text-align: left;
+    }
+    
+    .og-shipment-info {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 18px;
+        text-align: left;
+    }
+    
+    .og-product-description {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .og-product-info-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        @media screen and (max-width: 1024px) {
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            .og_subscription_reactivate {
+                padding-left: 24px;
+            }
+        }
+    }
+    
+    .og-order-actions {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+    
+    .og-shipment-footer {
+        margin: 0 !important;
+    }
+}

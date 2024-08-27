@@ -1,0 +1,47 @@
+<div class="og-cancel-subscription-select-reasons" hidden>
+  {% set cancel_reasons = 'cancel_reasons' | t %}
+  {% set dialog_header_text = 'modal_cancel_header' | t %}
+  {% include 'dialog-header' %}
+
+  <div class="og-dialog-body radio-list">
+    {{ 'modal_cancel_body' | t }}
+
+    {% for reason in cancel_reasons | entries %}
+      {% set code = reason | first %}
+      {% set text = reason | last %}
+
+      {% if code != '1' %}
+        <div class="og-input-group">
+          <input @click={{ '(ev) => enable_continue_btn(ev)' | js }} class="og-check-radio og-cancel-reason-radio" required type="radio" name="cancel_reason" value="{{ code }} | {{ text }}" id="cancel_reason_{{ code }}_{{ subscription.public_id }}" />
+          <label class="og-check-radio-label" for="cancel_reason_{{ code }}_{{ subscription.public_id }}">
+            {{ text }}
+          </label>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {# Other cancel reason #}
+    {% set other_reason = cancel_reasons | get('1') %}
+    {% if other_reason %}
+      <div class="og-input-group">
+        <input class="og-check-radio og-cancel-reason-radio" @click={{ '(ev) => enable_text_area(ev)' | js }} required type="radio" name="cancel_reason" value="1" id="cancel_reason_1_{{ subscription.public_id }}" />
+        <label class="og-check-radio-label" for="cancel_reason_1_{{ subscription.public_id }}">{{ other_reason }}</label>
+      </div>
+      <textarea
+        onfocus='this.form.querySelector("input[value=\\"1\\"]").click()'
+        class="og-form-control other-cancel-reason"
+        name="cancel_reason_details" placeholder="Please provide feedback" hidden
+      ></textarea>
+    {% endif %}
+
+    <input type="hidden" name="subscription" value="{{ subscription.public_id }}" />
+
+    <span class="still-cancel">Still want to cancel?</span>
+
+    <div class="og-dialog-footer og-dialog-stacked-buttons">
+      <button disabled class="og-button og-cancel-continue-btn og-primary" name="continue_cancel_subscription" type="button" @click={{ '(ev) => show_confirm_cancellation_popup(ev, product.name)' | js }}>
+        Continue
+      </button>
+    </div>
+  </div>{# /og-dialog-body #}
+</div>

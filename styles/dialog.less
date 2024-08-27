@@ -1,0 +1,405 @@
+// prevent scrolling when dialog open
+html:has(& sm-dialog dialog[open]) {
+  scrollbar-gutter: stable; // prevent layout shift
+  overflow: hidden;
+}
+dialog::backdrop,
+dialog + .backdrop {
+  transition: all 0.2s ease;
+  background: @dialog-backdrop-color;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+
+sm-dialog {
+  dialog {
+    position: fixed;
+    inset: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    width: 100%;
+    border: 0;
+    padding: 48px 36px 36px 36px;
+    min-width: 56em;
+    max-height: fit-content;
+    min-width: auto;
+
+    @media (max-width: 1024px) {
+      padding: 48px 24px 24px 24px;
+    }
+
+    @media (max-width: 600px) {
+      max-width: 100%;
+      width: 100% !important;
+    }
+  }
+}
+
+/*================ Dialog Parts ================*/
+
+.og-dialog-header {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-bottom: 24px;
+  justify-content: center;
+
+  .og-dialog-title {
+    color: #1a1a1a;
+    font-family: proxima-nova-extra-condensed;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 44px;
+    @media (max-width: 1024px) {
+      font-size: 36px;
+      line-height: 34px;
+    }
+  }
+
+  .og-button,
+  .og-button-close {
+    position: absolute;
+    font-size: 14px !important;
+    color: #1a1a1a !important;
+    letter-spacing: 0.2px;
+    background-color: transparent;
+    height: 15px;
+    width: 15px;
+    right: 40px;
+    top: 40px;
+    min-width: 20px !important;
+  }
+}
+
+.og-dialog-body-content {
+  color: #1a1a1a;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  @media (max-width: 1024px) {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}
+
+.og-dialog-footer {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 48px;
+
+  .og-button {
+    width: 100%;
+  }
+  @media (max-width: 1024px) {
+    &.og-dialog-stacked-buttons {
+      flex-direction: column;
+    }
+  }
+}
+
+.og-input-group {
+  label {
+    display: flex;
+    align-items: center;
+  }
+}
+
+label {
+  font-weight: normal;
+}
+
+.og-check-radio:checked + label {
+  font-weight: bold !important;
+}
+
+.og-change-shipment-date-button {
+  .og-skip-shipment-text {
+    display: none;
+  }
+
+  .og-skip-shipment-radio:checked ~ .og-skip-shipment-text {
+    display: block;
+  }
+  .og-skip-shipment-radio:checked ~ .og-change-date-picker {
+    display: none;
+  }
+  .og-skip-shipment-group {
+    .og-check-radio-label {
+      &::after {
+        display: inline-block;
+        content: "You won't be charged";
+        font-weight: normal;
+        margin-left: 10px;
+        text-align: right;
+      }
+    }
+  }
+}
+
+.og-send-shipment-now-button,
+.og-change-shipment-date-button {
+  dialog {
+    width: 600px;
+    max-width: 600px;
+    min-width: auto;
+    @media (max-width: 768px) {
+      max-width: 366px !important;
+    }
+    .og-dialog-header {
+      justify-content: flex-start;
+      margin-bottom: 12px !important;
+    }
+    .og-dialog-close {
+      top: 24px;
+      right: 24px;
+      padding: 0;
+    }
+    .og-dialog-body {
+      text-align: left;
+      .og-dialog-body-content {
+        margin-bottom: 48px;
+      }
+    }
+    .og-input-group {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      margin: 10px 0;
+      flex-direction: column;
+
+      .og-check-radio-label {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.og-change-shipment-date-button {
+  dialog {
+    padding: 3em !important;
+    @media (max-width: 768px) {
+      padding: 6em 3em 3em !important;
+      min-width: auto !important;
+      max-width: 90% !important;
+      overflow: auto;
+      overflow-y: scroll;
+      max-height: 100vh;
+    }
+
+    .og-dialog-label {
+      color: #000;
+      font-family: proxima-nova, Arial, sans-serif;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 28px; /* 155.556% */
+      text-transform: uppercase;
+      @media (max-width: 1024px) {
+        font-size: 13px;
+        line-height: 23px;
+      }
+    }
+
+    .og-check-radio-label {
+      font-family: proxima-nova, Arial, sans-serif;
+      color: #1a1a1a;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 18px;
+      margin: 0;
+      padding: 25px 0px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .og-check-radio-label::after {
+      position: absolute;
+      right: 5px;
+      @media (max-width: 768px) {
+        position: relative;
+        width: 100%;
+      }
+    }
+
+    .og-change-date-picker {
+      margin-top: 30px;
+      input {
+        width: fit-content;
+        font-weight: 700;
+      }
+    }
+
+    .og-skip-shipment-text {
+      font-family: proxima-nova, Arial, sans-serif;
+      color: #1a1a1a;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 18px;
+      margin-top: 30px;
+    }
+
+    .og-dialog-body {
+        height: fit-content;
+        min-height: 335px;
+    }
+    
+    .change-date-message {
+        margin: 20px 0;
+        display: flex;
+        padding: 12px 16px;
+        align-items: flex-start;
+        gap: 12px;
+        align-self: stretch;
+        border: 1px solid #B6D4FE;
+        background: #CFE2FF;
+        color: #084298;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+        .icon-wrpper {
+            img {
+                width: 16px;
+            }
+        }
+    }
+
+    .og-dialog-footer,
+    .og-button-wrapper {
+      flex-direction: column;
+      width: 100%;
+      margin-top: 0;
+    }
+  }
+}
+
+.og-delete-item-control {
+  dialog {
+    max-width: 50em;
+    width: 100%;
+    padding: 5em 2em 5em;
+    @media (max-width: 768px) {
+      padding: 5em 2em 5em !important;
+      min-width: auto !important;
+      max-width: 90% !important;
+      overflow: auto;
+      overflow-y: scroll;
+      max-height: 100vh;
+    }
+
+    .og-dialog-close {
+      top: 24px;
+      right: 24px;
+      padding: 0;
+    }
+
+    .og-dialog-title {
+      font-size: 2.1rem !important;
+      font-weight: default;
+    }
+
+    .og-dialog-body {
+      padding: 0 0 40px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .og-dialog-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      .og-button-wrapper {
+        width: 29em;
+        @media (max-width: 768px) {
+          width: 100%;
+        }
+
+        .og-primary:hover {
+          background-color: red !important;
+          border: 1px solid red !important;
+        }
+      }
+    }
+  }
+}
+
+.og-change-shipment-address-button {
+  dialog {
+    max-width: 514px;
+    width: 90% !important;
+    padding: 4em 2em 4em;
+    overflow: auto;
+    max-height: 95%;
+
+    @media (max-width: 768px) {
+      padding-top: 5em;
+    }
+
+    .og-dialog-title {
+      font-family: proxima-nova-extra-condensed;
+      @media (max-width: 1024px) {
+        font-size: 2.1rem;
+        font-weight: default;
+      }
+    }
+
+    .og-button-close {
+      padding: 0;
+    }
+
+    .og-dialog-body {
+      text-align: left;
+      padding: 0px 0 25px;
+    }
+
+    .og-check-radio-label {
+      margin-bottom: 0;
+      line-height: normal;
+
+      &:before {
+        display: none;
+      }
+    }
+
+    .og-check-radio {
+      opacity: 1;
+      position: initial;
+      width: 15px;
+      height: 15px;
+      accent-color: black;
+    }
+
+    .og-dialog-footer {
+      flex-direction: column;
+      margin-top: 0 !important;
+    }
+
+    .og-button-wrapper {
+      width: 29em;
+      @media (max-width: 768px) {
+        width: 100%;
+      }
+
+      .og-primary:hover {
+        background-color: red !important;
+        border: 1px solid red !important;
+      }
+    }
+  }
+}

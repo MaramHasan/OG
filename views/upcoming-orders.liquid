@@ -1,0 +1,35 @@
+{# Unsent orders entry point #}
+{% set order_counter = 0 %}
+<section id="og-unsent-shipments" class="og-upcoming-orders" aria-labelledBy="shipments-unsent-header">
+  {% if orders %}
+    {% for order in orders | select(status='UNSENT') | key %}
+      {% set enable_adult_signature_delivary_fee = false %}
+      {% set current_order_items = order_items | select(order=order.public_id) %}
+      {% set payment = payments | find(id=order.payment) %}
+      {% set shipping_address = addresses | find(id=order.shipping_address) %}
+
+      {% set hide_order = false %}
+      {% set pro_subscription = false %}
+      {% set health_subscription = false %}
+      {% for order_item in current_order_items %}
+        {% set subscription = subscriptions | find(id=order_item.subscription) %}
+        {% if subscription and get(subscription, 'extra_data.hidden') %} 
+          {% set hide_order = true %}
+        {% else %}
+          {% set order_counter = order_counter + 1 %}
+        {% endif %}
+        {% if subscription and subscription.extra_data and subscription.extra_data.pro_membership %}
+          {% set pro_subscription = true %}
+        {% endif %}
+        {% if subscription and subscription.extra_data and subscription.extra_data.health_membership %}
+          {% set health_subscription = true %}
+        {% endif %}
+      {% endfor %}
+      {% if not hide_order %}
+
+        {% include 'orders-unsent' %}
+
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+</section>

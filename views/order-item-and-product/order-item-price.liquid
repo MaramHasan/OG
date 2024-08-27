@@ -1,0 +1,10 @@
+<div class="og-price">
+  {# If the final price is less than the original price, #}
+  {# show the original price with a custom class #}
+  
+
+  <span class="og-base-unit-price">{{ (order_item.total_price / order_item.quantity) | currency }}</span>
+  {% if order_item.show_original_price %}
+    <span class="og-final-unit-price">{{ order_item.price | currency }}</span>
+  {% endif %}
+</div>{# /og-price #}

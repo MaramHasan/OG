@@ -1,0 +1,24 @@
+<input type="hidden" id ="subscription_health_membership" name="subscription_health_membership" value="{{ health_subscription or false }}" />
+<div class="og-cancel-subscription-skip">
+  {% set dialog_header_text = 'modal_cancel_header' | t %}
+  {% include 'dialog-header' %}
+
+  <div class="og-dialog-body">
+    <span class="og-cancel-confirm-text og-dialog-body-content">{{ 'modal_cancel_skip_text' | t }}</span>
+
+    <div class="og-dialog-footer og-dialog-stacked-buttons">
+      {%if health_subscription == false %}
+        <button class="og-button og-emphasis-button og-primary" name="skip_subscription" type="button" @click={{ '(ev) => open_skip_delivery(ev)' | js }}>
+          {{ 'modal_cancel_skip_button' | t }}
+        </button>
+      {% else %}
+        <button disabled class="og-button og-emphasis-button og-primary" name="skip_subscription" type="button">
+          {{ 'modal_cancel_skip_button' | t }}
+        </button>
+      {% endif %}
+      <button class="og-button og-secondary" name="continue_cancel_subscription" type="button" @click={{ 'show_cancel_reasons' | js }}>
+        {{ 'modal_cancel_save' | t }}
+      </button>
+    </div>{# /og-dialog-stacked-buttons #}
+  </div>
+</div>

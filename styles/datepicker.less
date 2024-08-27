@@ -1,0 +1,80 @@
+sm-datepicker {
+  .og-datepicker-footer {
+    border-top: 1px solid @color-border;
+    display: flex;
+    justify-content: flex-end;
+    padding: @size-3;
+  }
+  .og-datepicker-wrapper {
+    display: inline-block;
+    position: relative;
+  }
+  .og-datepicker-popover {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: @box-shadow-sm;
+    position: absolute;
+    z-index: 1000;
+    &[data-visibility='hidden'] {
+      display: none;
+    }
+  }
+  calendar-date {
+    width: 100%;
+    &::part(button) {
+      background: none;
+      border: none;
+      padding: @size-5;
+      &:focus-visible {
+        outline-color: @color-primary;
+        outline-offset: 4px;
+        outline-style: solid;
+      }
+    }
+    &::part(container) {
+      gap: 0;
+    }
+    &::part(header) {
+      border-bottom: 1px solid @color-border;
+    }
+    &::part(heading) {
+      display: block;
+      font-size: @size-4;
+      font-weight: 700;
+      left: 50%;
+      position: absolute;
+      top: @size-6-5;
+      transform: translateX(-50%);
+    }
+  }
+  calendar-month {
+    --color-accent: transparent;
+    --color-text-on-accent: @color-primary;
+    width: 100%;
+    &::part(button) {
+      font-size: @size-3-5;
+    }
+    &::part(button):hover {
+      border-radius: @border-radius-xs;
+      color: @color-primary;
+    }
+    &::part(button day):hover {
+      background: @color-menu-button-bg-hover;
+    }
+    &::part(button day selected) {
+      border: 1px solid @color-primary;
+      border-radius: @border-radius-xs;
+    }
+    &::part(heading) {
+      font-size: @size-4;
+      font-weight: 700;
+      left: 50%;
+      position: absolute;
+      top: @size-1-5;
+      transform: translateX(-50%);
+    }
+    &::part(table) {
+      margin: @size-2;
+    }
+  }
+}

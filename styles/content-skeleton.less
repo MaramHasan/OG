@@ -1,0 +1,95 @@
+.og-content-skeleton:empty {
+  display: block;
+  margin: 60px auto;
+  height: 835px;
+
+  background-image: linear-gradient(
+      100deg,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0) 80%
+    ),
+    linear-gradient(@color-content-skeleton 180px, transparent 0),
+    linear-gradient(@color-content-skeleton 28px, transparent 0),
+    linear-gradient(@color-content-skeleton 100px, transparent 0),
+    linear-gradient(@color-content-skeleton 20px, transparent 0),
+    linear-gradient(@color-content-skeleton 20px, transparent 0),
+    linear-gradient(@color-content-skeleton 20px, transparent 0),
+    linear-gradient(@color-content-skeleton 20px, transparent 0);
+
+  background-repeat: repeat-y, no-repeat, no-repeat, repeat-y, repeat-y, repeat-y, repeat-y, repeat-y;
+
+  background-size:
+    50px 200px,
+    100% 200px,
+    200px 200px,
+    100px 200px,
+    120px 200px,
+    100px 200px,
+    110px 200px,
+    170px 200px;
+
+  background-position:
+    0 0,
+    center top,
+    0 212px,
+    30px 280px,
+    150px 480px,
+    150px 520px,
+    150px 560px,
+    30px 612px;
+
+  animation: shine 1s infinite;
+
+  @media (min-width: @mobile-width) {
+    background-size:
+      50px 200px,
+      100% 200px,
+      300px 200px,
+      100px 200px,
+      220px 200px,
+      180px 200px,
+      200px 200px,
+      200px 200px;
+
+    background-position:
+      0 0,
+      center top,
+      0 212px,
+      60px 280px,
+      180px 480px,
+      180px 520px,
+      180px 560px,
+      545px 520px;
+  }
+}
+
+@keyframes shine {
+  to {
+    background-position:
+      110% 0,
+      center top,
+      0 212px,
+      30px 280px,
+      150px 480px,
+      150px 520px,
+      150px 560px,
+      30px 612px;
+  }
+}
+
+@media (min-width: @mobile-width) {
+  @keyframes shine {
+    to {
+      background-position:
+        110% 0,
+        center top,
+        0 212px,
+        60px 280px,
+        180px 480px,
+        180px 520px,
+        180px 560px,
+        545px 520px;
+    }
+  }
+}

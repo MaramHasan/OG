@@ -1,0 +1,16 @@
+<sm-notifications aria-live="assertive">
+  <ul>
+    {% for notification in notifications %}
+      {% set error_notification = 'error' in notification %}
+      <li
+        class="og-notification"
+        data-state="{{ 'error' if error_notification else nil }}"
+      >
+        <span class="og-message">
+          {% set notifications_t = 'notifications' | t %}
+          {{ notifications_t[notification.message] if notifications_t[notification.message] else notification.message }}
+        </span>
+      </li>
+    {% endfor %}
+  </ul>
+</sm-notifications>
