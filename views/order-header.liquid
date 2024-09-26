@@ -32,19 +32,31 @@
           </div>
         <div class="og-shipment-info"><span>Renews</span> <span class="og-shipment-date-header">{{ order.place | date }}</span></div>
       {% else %}
-        {% if order_counter == 1 %}
-          <div class="og-shipment-header-label">
-              <span>Future Shipment <span class="og-shipment-date-header">{{ order.place | date }}</span></span>
-          </div>
-        {% else %}
-          <div class="og-shipment-header-label">
-              <span>Next Shipment <span class="og-shipment-date-header">{{ order.place | date }}</span></span>
+        {% if bopis_routine %}
+            {% if order_counter == 1 %}
+              <div class="og-shipment-header-label">
+                  <span>Future Pick Up <span class="og-shipment-date-header">{{ order.place | date }}</span></span>
               </div>
+            {% else %}
+            <div class="og-shipment-header-label">
+                <span>Next Pick Up <span class="og-shipment-date-header">{{ order.place | date }}</span></span>
+                </div>
+            {% endif %}
+        {% else %}
+            {% if order_counter == 1 %}
+              <div class="og-shipment-header-label">
+                  <span>Future Shipment <span class="og-shipment-date-header">{{ order.place | date }}</span></span>
+              </div>
+            {% else %}
+              <div class="og-shipment-header-label">
+                  <span>Next Shipment <span class="og-shipment-date-header">{{ order.place | date }}</span></span>
+                  </div>
+            {% endif %}
         {% endif %}
       {% endif %}
 
       {# Shipping info #}
-        {% if shipping_address and pro_subscription == false and health_subscription == false %}
+        {% if shipping_address and pro_subscription == false and health_subscription == false and bopis_routine == false %}
           <div class="og-shipping">
             <div class="og-footer-header">
               {{ 'shipment_address_indicator' | t }}
@@ -58,6 +70,19 @@
               </div>
             </div>
           </div>
+        {% elseif bopis_routine == true %}
+              <div class="og-shipping">
+                <div class="og-footer-header">
+                  {{ 'pickup_address_indicator' | t }}
+                </div>
+                <div class="og-shipping-address-container" og-address-id="{{shipping_address.public_id}}">
+                  <div class="og-address-line-1">{{ subscription.extra_data.store_address_address1 }}</div>
+                  <div class="og-address-line-2">{{ subscription.extra_data.store_address_address2 }}</div>
+                  <div class="og-address-city-state-zip">
+                    {{ subscription.extra_data.store_address_postalCode }} {{ subscription.extra_data.store_address_city }}
+                  </div>
+                </div>
+              </div>
         {% endif %}
       {# Shipping info #}
   </div>
